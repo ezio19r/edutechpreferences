@@ -12,7 +12,7 @@ Also, the teacher will be able to visualize recommendations of free accessible l
 2.- Login into your Moodle platform as an Administrator and follow the steps to proceed with the plugin installation.
 3.- Add a new block "Edutech Preferences" within any Moodle Course.
 
-[Nuevo Bloque](https://github.com/ezio19r/edutechpreferences/tree/master/docs/newblock.png).
+![Nuevo Bloque](https://github.com/ezio19r/edutechpreferences/tree/master/docs/newblock.png).
 
 
 ## How to use
