@@ -18,17 +18,21 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     block_edutechpreferences
- * @copyright   2022 Ricardo Reyes <ricardo.ra@aguascalientes.tecnm.mx>
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
+require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
+use block_edutechpreferences\api\api;
 class block {
 
     public function getreportsummary($context) {
         global $DB;
         $query = $DB->get_records_sql('SELECT bl.preferences FROM {role_assignments} ra JOIN {user} u ON ra.userid = u.id
-        JOIN {block_edutechpreferences} bl ON ra.userid=bl.userid WHERE ra.contextid='.$context.' AND ra.roleid = 5');
+          JOIN {block_edutechpreferences} bl ON ra.userid=bl.userid WHERE ra.contextid = ? AND ra.roleid = 5', [$context]);
         $stats = array('id3' => 0,
                       'id2' => 0,
                       'id1' => 0,
@@ -43,6 +47,7 @@ class block {
                       'id11' => 0,
                       'id10' => 0,
                     );
+        $array = [];
         foreach ($query as $record) {
             $array = json_decode($record->preferences, true);
             foreach ($stats as $key2 => &$value2) {
@@ -55,12 +60,12 @@ class block {
         }
         arsort($stats);
         $stats = array_slice($stats, 0, 5);
-        $z = $this->areaname2($stats);
-        $footer = $this->getfooter($z);
+        $z = $this->getareanames($stats, 'professor');
+        $footer = $this->getfooterprofessor($z);
         return $footer;
     }
 
-    public function getfooter($array) {
+    public function getfooterprofessor($array) {
         $footer = '<div> <br/><label>'.get_string("contentsuggestions", "block_edutechpreferences").':</label><br/>';
         foreach ($array as $x => $xvalue) {
             if ($xvalue > 0) {
@@ -70,47 +75,23 @@ class block {
         $footer .= '<div>';
         return $footer;
     }
-    public function areaname2($array) {
-        $names = array('id3' => 'Descripción de texto para imágenes',
-                      'id2' => 'Evitar recursos con dependencia de color',
-                      'id1' => 'Información mayoritariamente visual',
-                      'id8' => 'Información mayoritariamente auditivo',
-                      'id7' => 'Evitar sonido de fondo sin control',
-                      'id6' => 'Transcripción para audio y video',
-                      'id5' => 'Descripción de audio para video',
-                      'id4' => 'Subtítulos para audio y video',
-                      'id9' => 'Información mayoritariamente textual',
-                      'id13' => 'Manejo total con mouse',
-                      'id12' => 'Manejo total con teclado',
-                      'id11' => 'Evitar simulación/movimiento',
-                      'id10' => 'Evitar luces parpadeantes'
-        );
-        $array2 = [];
-        foreach ($array as $key => $value) {
-            foreach ($names as $key2 => $value2) {
-                if ($key == $key2) {
-                    $array2 = array_merge($array2, [$value2 => $value]);
-                }
-            }
-        }
-          return $array2;
-    }
 
     public function getstudentpreferences() {
         global $DB;
         global $USER;
         $apis = new api();
-        $query = $DB->get_records_sql('SELECT * FROM  {block_edutechpreferences} bl WHERE bl.userid = '.$USER->id.' LIMIT 1');
+        $query = $DB->get_records_sql('SELECT preferences FROM  {block_edutechpreferences} bl
+          WHERE bl.userid = ? LIMIT 1', [$USER->id]);
         $array = new stdClass();
         foreach ($query as $record) {
             $array = json_decode($record->preferences, true);
-            $z = $this->areaName($array);
+            $z = $this->getareanames($array, 'student');
         }
-        $footer = $this->getfooter2($z);
+        $footer = $this->getfooterstudent($z);
         return $footer;
     }
 
-    public function getfooter2($array) {
+    public function getfooterstudent($array) {
         $footer = '<div> <br/><label>'.get_string("yourpreferences", "block_edutechpreferences").':</label><br/>';
         foreach ($array as $x => $xvalue) {
             if ($xvalue > 0) {
@@ -121,29 +102,31 @@ class block {
         return $footer;
     }
 
-    public function areaname($array) {
-        $names = array('id3' => 'Descripción de texto para imágenes',
-                      'id2' => 'Evitar recursos con dependencia de color',
-                      'id1' => 'Información mayoritariamente visual',
-                      'id8' => 'Información mayoritariamente auditivo',
-                      'id7' => 'Evitar sonido de fondo sin control',
-                      'id6' => 'Transcripción para audio y video',
-                      'id5' => 'Descripción de audio para video',
-                      'id4' => 'Subtítulos para audio y video',
-                      'id9' => 'Información mayoritariamente textual',
-                      'id13' => 'Manejo total con mouse',
-                      'id12' => 'Manejo total con teclado',
-                      'id11' => 'Evitar simulación/movimiento',
-                      'id10' => 'Evitar luces parpadeantes'
+    public function getareanames($array, $type) {
+        $names = array('id3' => get_string("id3", "block_edutechpreferences"),
+                      'id2' => get_string("id2", "block_edutechpreferences"),
+                      'id1' => get_string("id1", "block_edutechpreferences"),
+                      'id8' => get_string("id8", "block_edutechpreferences"),
+                      'id7' => get_string("id7", "block_edutechpreferences"),
+                      'id6' => get_string("id6", "block_edutechpreferences"),
+                      'id5' => get_string("id5", "block_edutechpreferences"),
+                      'id4' => get_string("id4", "block_edutechpreferences"),
+                      'id9' => get_string("id9", "block_edutechpreferences"),
+                      'id13' => get_string("id13", "block_edutechpreferences"),
+                      'id12' => get_string("id12", "block_edutechpreferences"),
+                      'id11' => get_string("id11", "block_edutechpreferences"),
+                      'id10' => get_string("id10", "block_edutechpreferences")
           );
-        $array2 = [];
+        $arraywithnames = [];
         foreach ($array as $key => $value) {
             foreach ($names as $key2 => $value2) {
-                if ($key == $key2) {
-                    $array2 = array_merge($array2, [$key => $value2]);
+                if ($key == $key2 and $type == 'student') {
+                    $arraywithnames = array_merge($arraywithnames, [$key => $value2]);
+                } else if ($key == $key2 and $type == 'professor') {
+                    $arraywithnames = array_merge($arraywithnames, [$value2 => $value]);
                 }
             }
         }
-        return $array2;
+        return $arraywithnames;
     }
 }

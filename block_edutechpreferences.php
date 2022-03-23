@@ -18,14 +18,15 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     block_edutechpreferences
- * @copyright   2022 Ricardo Reyes <ricardo.ra@aguascalientes.tecnm.mx>
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
-require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/block/block.php');
-
 class block_edutechpreferences extends block_base {
     public function init() {
         require_login($course, true, $cm);
@@ -36,19 +37,17 @@ class block_edutechpreferences extends block_base {
         $block = new block();
         $id = $COURSE->id;
         $context = get_context_instance(CONTEXT_COURSE, $id);
-
         $body = '';
         $footer = '';
-
         if (has_capability('block/edutechpreferences:viewreport', $context)) {
             if ($id and $id > 1) {
-                $body = '<a href = "'.$CFG->wwwroot. '../blocks/edutechpreferences/coursereport.php?id='.$id.'">
-                '.get_string("openreport", "block_edutechpreferences").'</a><br/>';
+                $body = '<a href = "'.$CFG->wwwroot.'../blocks/edutechpreferences/coursereport.php?id='.$id.'">'
+                .get_string("openreport", "block_edutechpreferences").'</a><br/>';
                 $footer = $block->getreportsummary($context->id);
             }
         } else if (has_capability('block/edutechpreferences:view', $context)) {
-              $body = '<a href = "'.$CFG->wwwroot. '../blocks/edutechpreferences/preferences.php">
-              '.get_string("editpreferences", "block_edutechpreferences").'</a><br/>';
+              $body = '<a href = "'.$CFG->wwwroot.'../blocks/edutechpreferences/preferences.php">'
+              .get_string("editpreferences", "block_edutechpreferences").'</a><br/>';
               $footer = $block->getstudentpreferences();
         }
         if ($this->content !== null) {

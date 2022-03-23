@@ -18,131 +18,104 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     block_edutechpreferences
- * @copyright   2022 Ricardo Reyes <ricardo.ra@aguascalientes.tecnm.mx>
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+namespace block_edutechpreferences\report;
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
+use block_edutechpreferences\api\api;
 class getreport {
+
     public function courseexists($courseid) {
         global $DB;
         $id = 0;
-        $report = '';
-        $query = $DB->get_records_sql('SELECT id FROM {course} WHERE id = '.$courseid.'');
-        foreach ($query as $value) {
-            if ($value->id > 1) {
-                $id = $value->id;
-                $report = $this->display($id);
-            }
+        $query = $DB->get_record_sql('SELECT id FROM {course} WHERE id = ? ', [$courseid]);
+        if ((int)$query->id > 1) {
+            $id = (int)$query->id;
         }
-        return $report;
+        return $id;
     }
 
-    public function display($courseid) {
+    public function summarystats($courseid) {
+        $context = get_context_instance(CONTEXT_COURSE, $courseid);
+        $totalstudents = $this->totalstudents($context->id);
+        $totalresponses = $this->totalresponses($context->id);
+        $avg = 0;
+        if ($totalstudents > 0) {
+            $avg = ($totalresponses * 100) / $totalstudents;
+        }
+        $array = array('summarystats' => [
+            ['name' => get_string("totalstudents", "block_edutechpreferences"), 'number' => $totalstudents],
+            ['name' => get_string("totalresponses", "block_edutechpreferences"), 'number' => $totalresponses],
+            ['name' => get_string("responserate", "block_edutechpreferences"), 'number' => $avg]
+        ]);
+        return $array;
+    }
+
+    public function reportdata($courseid) {
         $context = get_context_instance(CONTEXT_COURSE, $courseid);
         $apis = new api();
         $preferenceareas = $apis->getapi();
-        if ($preferenceareas != 0){
-            $preferenceareas = json_decode($preferenceareas);
-            $totalstudents = $this->totalstudents($context->id);
-            $totalresponses = $this->totalresponses($context->id);
-            $responsecount = 0;
-            $report = $this->_report;
-
-            $report = '<div class="row">';
+        $preferenceareas = json_decode($preferenceareas);
+        $totalstudents = $this->totalstudents($context->id);
+        $array = array();
+        if ($preferenceareas != 0) {
+            $categoryarray = [];
             foreach ($preferenceareas as $key) {
-                $report .= '<div class="col-lg-3 col-md-6" style="margin-bottom:10px; padding:5px;">
-                <div class="card">
-                <h5 class="card-header">
-                <b>'.$key->preferences_are.'</b>
-                </h5>
-                <div class="card-body" style="padding:20px;">';
+                $areaarray2 = [];
                 $responsecount = 0;
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
-                    $stat = 0;
                     if ($totalstudents > 0) {
-                        $stat = ($responsecount = $this->responsestats($context->id, $id) * 100) / $totalstudents;
+                        $responsecount = ($this->responsestats($context->id, $id) * 100) / $totalstudents;
                     }
-                    $report .= '<div>
-                    '.$data->description.'
-                    <div class="progress">
-                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: '.$stat.'%;"
-                    aria-valuenow="'.$stat.'" aria-valuemin="0" aria-valuemax="100">'.$stat.'%</div>
-                    </div><br>
-                    </div>';
+                    array_push($areaarray2, ['name' => $data->description, 'count' => $responsecount ]);
                 }
-                $report .= '</div>
-                </div>
-                </div>';
+                array_push($categoryarray, ['category' => $key->preferences_are, 'areas' => $areaarray2]);
             }
-            $report .= '</div>';
-            $avg = 0;
-            if ($totalstudents > 0) {
-                $avg = ($totalresponses * 100) / $totalstudents;
-            }
-            $report .= '
-            <div class="row">
-            <div class="col-md-12">
-            <table style="text-align:right">
-            <tr><td><b>'.get_string("totalstudents", "block_edutechpreferences").':</b></td><td>'.$totalstudents.'</td></tr>
-            <tr><td><b>'.get_string("totalresponses", "block_edutechpreferences").':</b></td><td>'.$totalresponses.'</td></tr>
-            <tr><td><b>% '.get_string("responserate", "block_edutechpreferences").':</b></td><td> &nbsp'.$avg.'</td></tr>
-            </table>
-            </div>
-            </div>
-            ';
-            $report .= '
-            <div class="row">
-            		<div class="col-md-12" style="text-align:center;"><br><br>
-                <a href="'.$CFG->wwwroot. '../../course/view.php?id='.$courseid.'"><button type="button" class="btn btn-primary">
-            				'.get_string("goback", "block_edutechpreferences").'
-            			</button></a>
-                </div>
-            </div>
-            ';
-            return $report;
-       }
-       else {
-           \core\notification::error("Ocurrio un error al intentar conectarse al servidor Edutech");
-           return '';
-       }
+            $array['stats'] = $categoryarray;
+            return $array;
+        } else {
+            \core\notification::error("Ocurrio un error al intentar conectarse al servidor Edutech");
+            return '';
+        }
+        return $array;
     }
 
+    public function buttoninfo($courseid) {
+        $array = array('button' => ["name" => get_string("goback", "block_edutechpreferences"), "url"
+         => "$CFG->wwwroot../../course/view.php?id=$courseid"]);
+        return $array;
+    }
 
     public function totalstudents($context) {
         global $DB;
-        $totalstudentsincourse = $DB->get_records_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
-        JOIN {user} u ON ra.userid=u.id WHERE ra.contextid='.$context.' AND ra.roleid = 5');
-        $tsic = 0;
-        foreach ($totalstudentsincourse as $record) {
-            $tsic = $record->total;
-        }
-        return $tsic;
+        $query = $DB->get_record_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
+        JOIN {user} u ON ra.userid=u.id WHERE ra.contextid= ? AND ra.roleid = 5', [$context]);
+        $totalstudents = (int)$query->total;
+        return $totalstudents;
     }
 
     public function totalresponses($context) {
         global $DB;
-        $totalstudentsresponses = $DB->get_records_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
-        JOIN {user} u ON ra.userid = u.id JOIN {block_edutechpreferences} bl ON ra.userid=bl.userid
-        WHERE ra.contextid='.$context.' AND ra.roleid = 5 ' );
-        $tsr = 0;
-        foreach ($totalstudentsresponses as $record) {
-            $tsr = $record->total;
-        }
-        return $tsr;
+        $query = $DB->get_record_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
+        JOIN {user} u ON ra.userid = u.id JOIN {block_edutechpreferences} bl ON ra.userid = bl.userid
+        WHERE ra.contextid = ? AND ra.roleid = 5', [$context]);
+        $totalresponses = (int)$query->total;
+        return $totalresponses;
     }
 
     public function responsestats($context, $id) {
         global $DB;
-        $z = $DB->get_records_sql("SELECT COUNT(bl.id) as Total FROM {role_assignments} ra
+        $id = "%$id%";
+        $query = $DB->get_record_sql('SELECT COUNT(bl.id) as total FROM {role_assignments} ra
         JOIN {user} u ON ra.userid = u.id JOIN {block_edutechpreferences} bl ON ra.userid = bl.userid
-        WHERE ra.contextid = '.$context.' AND ra.roleid=5 AND bl.preferences LIKE '%$id%'");
-        $count = 0;
-        foreach ($z as $record) {
-            $count = $record->total;
-        }
-        return $count;
+        WHERE ra.contextid = ? AND ra.roleid = 5 AND bl.preferences LIKE ?', [$context, $id]);
+        $responsestats = (int)$query->total;
+        return $responsestats;
     }
 }

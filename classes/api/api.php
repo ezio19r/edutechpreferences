@@ -18,47 +18,28 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     block_edutechpreferences
- * @copyright   2022 Ricardo Reyes <ricardo.ra@aguascalientes.tecnm.mx>
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace block_edutechpreferences\api;
 
-defined('MOODLE_INTERNAL') || die();
 class api {
     const SERVER = 'https://repositorio.edutech-project.org/';
     public function getapi() {
-        $apidir = 'https://repositorio.edutech-project.org/api/v1/preferences-area/';
+        $apidir = ( self::SERVER . "api/v1/preferences-area/");
         $url = $apidir;
         try {
-              $curl = curl_init($url);
-              curl_setopt($curl, CURLOPT_URL, $url);
-              curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-              //for debug only!
-              curl_setopt($curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-              curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-              curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 2);
-              $resp = curl_exec($curl);
-              //var_dump($resp);
-              curl_close($curl);
-              return($resp);
+            $curl = curl_init($url);
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            $resp = curl_exec($curl);
+            curl_close($curl);
+            return($resp);
         } catch (\Exception $e) {
               return 0;
         }
-    }
-
-
-    public function getpreferenceName($id){
-        $apidir = "https://repositorio.edutech-project.org/api/v1/user-preferences/".$id."/";
-        $url = $apidir;
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        //for debug only!
-        curl_setopt($curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 2);
-        $resp = curl_exec($curl);
-        curl_close($curl);
-
-        return($resp);
     }
 }

@@ -24,22 +24,10 @@
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
-$capabilities = array(
-      'block/edutechpreferences:view' => array(
-          'captype' => 'read',
-          'contextlevel' => CONTEXT_COURSE,
-          'archetypes' => array(
-              'student' => CAP_ALLOW
-          ),
-      ),
-      'block/edutechpreferences:viewreport' => array(
-          'captype' => 'read',
-          'contextlevel' => CONTEXT_COURSE,
-          'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-          ),
-      )
-);
+
+ namespace block_edutechpreferences\tests;
+
+ class tests 
+ {
+
+ }

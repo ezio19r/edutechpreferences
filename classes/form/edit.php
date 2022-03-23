@@ -18,15 +18,17 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     block_edutechpreferences
- * @copyright   2022 Ricardo Reyes <ricardo.ra@aguascalientes.tecnm.mx>
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 // Moodleform is defined in formslib.php.
-
-require_once($CFG->dirroot . '/config.php');
+defined('MOODLE_INTERNAL') || die();
 require_once("$CFG->libdir/formslib.php");
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
-defined('MOODLE_INTERNAL') || die();
+use block_edutechpreferences\api\api;
 class edit extends moodleform {
     // Add elements to form.
     public function definition() {
@@ -50,22 +52,19 @@ class edit extends moodleform {
             }
             $this->add_action_buttons($cancel = true, $submitlabel = null);
         } else {
-              \core\notification::error("Ocurrio un error al intentar conectarse al servidor Edutech");
+              \core\notification::error(get_string("apierror", "block_edutechpreferences"));
         }
     }
     // Custom validation should be added here.
-    function validation($data, $files) {
+    public function validation($data, $files) {
         return array();
     }
 
     public function checkdata($userid, $id) {
         global $DB;
-        $query = $DB->get_records_sql("SELECT COUNT(id) as COUNT FROM {block_edutechpreferences} WHERE userid=$userid
-        AND preferences LIKE '%$id%'");
-        $count = 0;
-        foreach ($query as $record) {
-            $count = $record->count;
-        }
-        return $count;
+        $id = "%$id%";
+        $query = $DB->get_record_sql('SELECT COUNT(id) as count FROM {block_edutechpreferences} WHERE  userid = ?
+        AND preferences LIKE ? ', [$userid, $id] );
+        return $query->count;
     }
 }

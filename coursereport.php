@@ -18,23 +18,44 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     block_edutechpreferences
- * @copyright   2022 Ricardo Reyes <ricardo.ra@aguascalientes.tecnm.mx>
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../config.php');
 require_login($course, true, $cm);
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/report/getreport.php');
-
-$PAGE->set_url(new moodle_url(url: '/blocks/simplemessage/coursereport.php'));
+use block_edutechpreferences\report\getreport;
+$PAGE->set_url(new moodle_url(url: '/blocks/edutechpreferences/coursereport.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(title: get_string("preferencesreport", "block_edutechpreferences"));
 $PAGE->set_heading(get_string("preferencesreport", "block_edutechpreferences"));
 
-$report = new getreport();
 $courseid = optional_param('id', 0, PARAM_INT);
+$PAGE->navbar->ignore_active();
+$PAGE->navbar->add(get_string('course'), new moodle_url('/course/view.php?id='.$courseid.''));
+$PAGE->navbar->add(get_string('openreport', "block_edutechpreferences"));
+$report = new getreport();
+$courseexists = $report->courseexists($courseid);
+
 echo $OUTPUT->header();
-if ($courseid > 1) {
-    echo $report->courseexists($courseid);
+if ($courseexists > 1) {
+    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    if ( has_capability('block/edutechpreferences:viewreport', $context)) {
+        $reportdata = $report->reportdata($courseid);
+        $summarystats = $report->summarystats($courseid);
+        $buttoninfo = $report->buttoninfo($courseid);
+        $arrayfortemplate = $reportdata;
+        $arrayfortemplate = array_merge($arrayfortemplate, $summarystats);
+        $arrayfortemplate = array_merge($arrayfortemplate, $buttoninfo);
+        echo $OUTPUT->render_from_template('block_edutechpreferences/stats', $arrayfortemplate);
+    } else {
+        \core\notification::error(get_string("donthavepermissions", "block_edutechpreferences"));
+    }
+} else {
+      \core\notification::error(get_string("courseerror", "block_edutechpreferences"));
 }
 echo $OUTPUT->footer();
