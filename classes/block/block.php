@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
 use block_edutechpreferences\api\api;
-class block {
+class edutechblock {
 
     public function getreportsummary($context) {
         global $DB;

@@ -40,8 +40,7 @@ class getreport {
         return $id;
     }
 
-    public function summarystats($courseid) {
-        $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    public function summarystats($courseid, $context) {
         $totalstudents = $this->totalstudents($context->id);
         $totalresponses = $this->totalresponses($context->id);
         $avg = 0;
@@ -56,8 +55,7 @@ class getreport {
         return $array;
     }
 
-    public function reportdata($courseid) {
-        $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    public function reportdata($courseid, $context) {
         $apis = new api();
         $preferenceareas = $apis->getapi();
         $preferenceareas = json_decode($preferenceareas);
@@ -87,8 +85,9 @@ class getreport {
     }
 
     public function buttoninfo($courseid) {
+        global $CFG;
         $array = array('button' => ["name" => get_string("goback", "block_edutechpreferences"), "url"
-         => "$CFG->wwwroot../../course/view.php?id=$courseid"]);
+         => "$CFG->wwwroot/course/view.php?id=$courseid"]);
         return $array;
     }
 

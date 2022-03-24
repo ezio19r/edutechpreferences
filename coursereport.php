@@ -26,10 +26,10 @@
  */
 
 require_once(__DIR__ . '/../../config.php');
-require_login($course, true, $cm);
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/report/getreport.php');
 use block_edutechpreferences\report\getreport;
 $PAGE->set_url(new moodle_url(url: '/blocks/edutechpreferences/coursereport.php'));
+require_login();
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(title: get_string("preferencesreport", "block_edutechpreferences"));
 $PAGE->set_heading(get_string("preferencesreport", "block_edutechpreferences"));
@@ -43,10 +43,11 @@ $courseexists = $report->courseexists($courseid);
 
 echo $OUTPUT->header();
 if ($courseexists > 1) {
-    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    //$context = get_context_instance(CONTEXT_COURSE, $courseid);
+    $context = context_course::instance($courseid);
     if ( has_capability('block/edutechpreferences:viewreport', $context)) {
-        $reportdata = $report->reportdata($courseid);
-        $summarystats = $report->summarystats($courseid);
+        $reportdata = $report->reportdata($courseid, $context);
+        $summarystats = $report->summarystats($courseid, $context);
         $buttoninfo = $report->buttoninfo($courseid);
         $arrayfortemplate = $reportdata;
         $arrayfortemplate = array_merge($arrayfortemplate, $summarystats);

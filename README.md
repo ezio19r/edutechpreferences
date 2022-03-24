@@ -8,11 +8,11 @@ Students will be able to define their content preferences according to their acc
 Also, the teacher will be able to visualize recommendations of free accessible learning objects available in the [EduTech Repository](https://repositorio.edutech-project.org/).
 
 ## Installation in a Moodle Platform
-1.- Copy this repository code inside your Moodle path:  "/moodle/blocks/edutechpreferences/".
-2.- Login into your Moodle platform as an Administrator and follow the steps to proceed with the plugin installation.
-3.- Add a new block "Edutech Preferences" within any Moodle Course.
+- 1.- Copy this repository code inside your Moodle path:  "/moodle/blocks/edutechpreferences/".
+- 2.- Login into your Moodle platform as an Administrator and follow the steps to proceed with the plugin installation.
+- 3.- Add a new block "Edutech Preferences" within any Moodle Course.
 
-![Nuevo Bloque](https://github.com/ezio19r/edutechpreferences/tree/master/docs/newblock.png).
+![Nuevo Bloque](docs/newblock.png).
 
 
 ## How to use

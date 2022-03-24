@@ -26,12 +26,16 @@
  */
 defined('MOODLE_INTERNAL') || die();
 $capabilities = array(
+      'block/edutechpreferences:addinstance' => array(
+          'captype' => 'read',
+          'contextlevel' => CONTEXT_COURSE
+      ),
       'block/edutechpreferences:view' => array(
           'captype' => 'read',
           'contextlevel' => CONTEXT_COURSE,
           'archetypes' => array(
               'student' => CAP_ALLOW
-          ),
+          )
       ),
       'block/edutechpreferences:viewreport' => array(
           'captype' => 'read',
@@ -40,6 +44,6 @@ $capabilities = array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
-          ),
+          )
       )
 );

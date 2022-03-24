@@ -27,28 +27,29 @@
 
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/block/block.php');
+require_login();
+
 class block_edutechpreferences extends block_base {
     public function init() {
-        require_login($course, true, $cm);
         $this->title = get_string("titleblock", "block_edutechpreferences");
     }
     public function get_content() {
-        global $COURSE;
-        $block = new block();
+        global $COURSE, $CFG;
+        $edutechblock = new edutechblock();
         $id = $COURSE->id;
-        $context = get_context_instance(CONTEXT_COURSE, $id);
+        $context = context_course::instance($id);
         $body = '';
         $footer = '';
         if (has_capability('block/edutechpreferences:viewreport', $context)) {
             if ($id and $id > 1) {
-                $body = '<a href = "'.$CFG->wwwroot.'../blocks/edutechpreferences/coursereport.php?id='.$id.'">'
+                $body = '<a href = "'.$CFG->wwwroot.'/blocks/edutechpreferences/coursereport.php?id='.$id.'">'
                 .get_string("openreport", "block_edutechpreferences").'</a><br/>';
-                $footer = $block->getreportsummary($context->id);
+                $footer = $edutechblock->getreportsummary($context->id);
             }
         } else if (has_capability('block/edutechpreferences:view', $context)) {
-              $body = '<a href = "'.$CFG->wwwroot.'../blocks/edutechpreferences/preferences.php">'
+              $body = '<a href = "'.$CFG->wwwroot.'/blocks/edutechpreferences/preferences.php">'
               .get_string("editpreferences", "block_edutechpreferences").'</a><br/>';
-              $footer = $block->getstudentpreferences();
+              $footer = $edutechblock->getstudentpreferences();
         }
         if ($this->content !== null) {
             return $this->content;

@@ -27,17 +27,15 @@
 
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/form/edit.php');
-require_login($course, true, $cm);
 defined('MOODLE_INTERNAL') || die();
-global $DB;
-
 $PAGE->set_url(new moodle_url(url: '/blocks/simplemessage/preferences.php'));
+require_login();
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(title: get_string("preferencesreport", "block_edutechpreferences"));
 $PAGE->set_heading(get_string("preferencesreport", "block_edutechpreferences"));
-
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('editpreferences', "block_edutechpreferences"));
+global $DB;
 
 $mform = new edit();
 // Form processing and displaying is done here.
