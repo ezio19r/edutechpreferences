@@ -29,6 +29,14 @@ require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
 use block_edutechpreferences\api\api;
 class edutechblock {
 
+    /**
+     * Gets the students preferences from the database within a course and genererates
+     * summary stats to be presented inside the block.
+     * in case of failure returns an empty string.
+     * in case of success returns a string with the html for the block's footer.
+     * @param int $context
+     * @return string $footer
+     */
     public function getreportsummary($context) {
         global $DB;
         $query = $DB->get_records_sql('SELECT bl.preferences FROM {role_assignments} ra JOIN {user} u ON ra.userid = u.id
@@ -65,7 +73,15 @@ class edutechblock {
         return $footer;
     }
 
-    public function getfooterprofessor($array) {
+    /**
+     * Receives the structured data and fotmats it with the html code
+     * to be presented in the block's footer (teacher's view).
+     * in case of failure returns an empty string.
+     * in case of success returns a string with the html for the block's footer.
+     * @param array $array
+     * @return string $footer
+     */
+    private function getfooterprofessor($array) {
         $footer = '<div> <br/><label>'.get_string("contentsuggestions", "block_edutechpreferences").':</label><br/>';
         foreach ($array as $x => $xvalue) {
             if ($xvalue > 0) {
@@ -76,6 +92,14 @@ class edutechblock {
         return $footer;
     }
 
+    /**
+     * Gets the preferences of current student (if any) from the database to list them
+     * inside the block's footer.
+     * in case of failure returns an empty string.
+     * in case of success returns a string with the html code for the block's footer.
+     * @param int $context
+     * @return string $footer
+     */
     public function getstudentpreferences() {
         global $DB;
         global $USER;
@@ -83,15 +107,24 @@ class edutechblock {
         $query = $DB->get_records_sql('SELECT preferences FROM  {block_edutechpreferences} bl
           WHERE bl.userid = ? LIMIT 1', [$USER->id]);
         $array = new stdClass();
+        $preferencesnames = new stdClass();
         foreach ($query as $record) {
             $array = json_decode($record->preferences, true);
-            $z = $this->getareanames($array, 'student');
+            $preferencesnames = $this->getareanames($array, 'student');
         }
-        $footer = $this->getfooterstudent($z);
+        $footer = $this->getfooterstudent($preferencesnames);
         return $footer;
     }
 
-    public function getfooterstudent($array) {
+    /**
+     * Receives the structured data and fotmats it with the html code
+     * to be presented in the block's footer (student's view).
+     * in case of failure returns an empty string.
+     * in case of success returns a string with the html code for the block's footer.
+     * @param array $array
+     * @return string $footer
+     */
+    private function getfooterstudent($array) {
         $footer = '<div> <br/><label>'.get_string("yourpreferences", "block_edutechpreferences").':</label><br/>';
         foreach ($array as $x => $xvalue) {
             if ($xvalue > 0) {
@@ -102,7 +135,15 @@ class edutechblock {
         return $footer;
     }
 
-    public function getareanames($array, $type) {
+    /**
+     * Given the preferences id's previously stored in the database, generates an
+     * array with the area names in english or spanish.
+     * In case of success returns an array with the id's and area names.
+     * @param array $array with each preference id
+     * @param string $type dependig if the block is shown to students or teachers
+     * @return array $arraywithnames
+     */
+    private function getareanames($array, $type) {
         $names = array('id3' => get_string("id3", "block_edutechpreferences"),
                       'id2' => get_string("id2", "block_edutechpreferences"),
                       'id1' => get_string("id1", "block_edutechpreferences"),

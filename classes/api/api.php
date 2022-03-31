@@ -27,7 +27,17 @@
 namespace block_edutechpreferences\api;
 
 class api {
+    /**
+     * URL of the edutech repository
+     */
     const SERVER = 'https://repositorio.edutech-project.org/';
+    /**
+     * Attempt to connect to the Edutech Repositori to get the areas and preferences.
+     * in case of failure returns a zero.
+     * in case of success Returns a json array with the areas and preferences.
+     * @throws \repository_exception
+     * @return string
+     */
     public function getapi() {
         $apidir = ( self::SERVER . "api/v1/preferences-area/");
         $url = $apidir;

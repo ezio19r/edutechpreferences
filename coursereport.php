@@ -28,12 +28,11 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/report/getreport.php');
 use block_edutechpreferences\report\getreport;
-$PAGE->set_url(new moodle_url(url: '/blocks/edutechpreferences/coursereport.php'));
+$PAGE->set_url(new moodle_url('/blocks/edutechpreferences/coursereport.php'));
 require_login();
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(title: get_string("preferencesreport", "block_edutechpreferences"));
 $PAGE->set_heading(get_string("preferencesreport", "block_edutechpreferences"));
-
 $courseid = optional_param('id', 0, PARAM_INT);
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('course'), new moodle_url('/course/view.php?id='.$courseid.''));
@@ -42,8 +41,8 @@ $report = new getreport();
 $courseexists = $report->courseexists($courseid);
 
 echo $OUTPUT->header();
+// Tries to get all the preferences for each student in the course and display statistical information.
 if ($courseexists > 1) {
-    //$context = get_context_instance(CONTEXT_COURSE, $courseid);
     $context = context_course::instance($courseid);
     if ( has_capability('block/edutechpreferences:viewreport', $context)) {
         $reportdata = $report->reportdata($courseid, $context);

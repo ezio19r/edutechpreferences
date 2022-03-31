@@ -30,6 +30,11 @@ require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
 use block_edutechpreferences\api\api;
 class getreport {
 
+    /**
+     * Checks if the course that is trying to access exists before generating the report.
+     * @param int $course  Moodle's course id
+     * @return int $id Moodle's course id (verified)
+     */
     public function courseexists($courseid) {
         global $DB;
         $id = 0;
@@ -40,6 +45,12 @@ class getreport {
         return $id;
     }
 
+    /**
+     * Calculates the summary stats of the students group.
+     * @param int $courseid  Moodle's course id
+     * @param int $id Moodle's course context
+     * @return array $array with the summary stats of the course
+     */
     public function summarystats($courseid, $context) {
         $totalstudents = $this->totalstudents($context->id);
         $totalresponses = $this->totalresponses($context->id);
@@ -55,6 +66,12 @@ class getreport {
         return $array;
     }
 
+    /**
+     * Calculates the full report stats of the students group.
+     * @param int $courseid  Moodle's course id
+     * @param int $context Moodle's course context
+     * @return array $array with the full report stats of the course
+     */
     public function reportdata($courseid, $context) {
         $apis = new api();
         $preferenceareas = $apis->getapi();
@@ -84,6 +101,11 @@ class getreport {
         return $array;
     }
 
+    /**
+     * Creates a 'back' button with the course url to be properly redirected
+     * @param int $courseid  Moodle's course id
+     * @return array $array the button text and href url
+     */
     public function buttoninfo($courseid) {
         global $CFG;
         $array = array('button' => ["name" => get_string("goback", "block_edutechpreferences"), "url"
@@ -91,6 +113,11 @@ class getreport {
         return $array;
     }
 
+    /**
+     * Gets the number of students enrolled in a specifict course
+     * @param int $context Moodle's course context
+     * @return int $totalstudents
+     */
     public function totalstudents($context) {
         global $DB;
         $query = $DB->get_record_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
@@ -99,6 +126,11 @@ class getreport {
         return $totalstudents;
     }
 
+    /**
+     * Gets the number of students enrolled in a specifict course that have filled the EduTech form
+     * @param int $context Moodle's course context
+     * @return int $totalresponses
+     */
     public function totalresponses($context) {
         global $DB;
         $query = $DB->get_record_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
@@ -108,6 +140,12 @@ class getreport {
         return $totalresponses;
     }
 
+    /**
+     * Calculates the rate of responses for each student and preferences area.
+     * @param int $context Moodle's course context
+     * @param int $id preference area id
+     * @return int $responsestats number of responses for each preference area
+     */
     public function responsestats($context, $id) {
         global $DB;
         $id = "%$id%";

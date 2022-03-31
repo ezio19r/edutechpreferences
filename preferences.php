@@ -28,7 +28,7 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/form/edit.php');
 defined('MOODLE_INTERNAL') || die();
-$PAGE->set_url(new moodle_url(url: '/blocks/simplemessage/preferences.php'));
+$PAGE->set_url(new moodle_url('/blocks/edutechpreferences/preferences.php'));
 require_login();
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(title: get_string("preferencesreport", "block_edutechpreferences"));
@@ -48,9 +48,11 @@ if ($mform->is_cancelled()) {
     $answers = $fromform;
     unset($answers->submitbutton);
     $recordtoinsert->preferences = json_encode($answers);
-    $query = $DB->get_record_sql('SELECT id FROM {block_edutechpreferences} WHERE userid = ? LIMIT 1', [$USER->id]);
-    $rowid = $query->id;
-
+    $query = $DB->get_record_sql('SELECT id AS id FROM {block_edutechpreferences} WHERE userid = ? LIMIT 1', [$USER->id]);
+    $rowid = 0;
+    if (isset($query->id)) {
+        $rowid = $query->id;
+    }
     if ($rowid == 0) {
         try {
             $DB->insert_record('block_edutechpreferences', $recordtoinsert);
@@ -73,7 +75,7 @@ if ($mform->is_cancelled()) {
     } else {
         \core\notification::error(get_string("databaseerror", "block_edutechpreferences"));
     }
-
+    // Display form with the information previously given and stored in the database.
     echo $OUTPUT->header();
     $mform->display();
     echo $OUTPUT->footer();

@@ -1,7 +1,7 @@
 # Moodle Plugin block_edutechpreferences
 
 ## Overview
-This plugin allows teachers to easily identify the needs of accessible content required by the students of each of their courses through a preference report.
+This plugin allow teachers to easily identify the needs of accessible content required by the students of each of their courses through a preference report.
 
 Students will be able to define their content preferences according to their accessibility needs.
 

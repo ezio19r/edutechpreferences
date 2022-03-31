@@ -24,13 +24,19 @@
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-// Moodleform is defined in formslib.php.
 defined('MOODLE_INTERNAL') || die();
+// Moodleform is defined in formslib.php.
 require_once("$CFG->libdir/formslib.php");
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
 use block_edutechpreferences\api\api;
 class edit extends moodleform {
-    // Add elements to form.
+    /**
+     * Generates the preferences form with the data obtained of the API/getapi()
+     * if the form was previously filled by the current student, it will be prefilled with the stored data
+     * in case of failure prints a notification with the error
+     * in case of success, the form will be shown.
+     * @return void
+     */
     public function definition() {
         global $USER;
         global $CFG;
@@ -43,9 +49,9 @@ class edit extends moodleform {
                 $mform->addElement('static', 'description', "<b>$key->preferences_are</b>");
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
-                    $z = $this->checkdata($USER->id, $id);
+                    $answered = $this->checkdata($USER->id, $id);
                     $mform->addElement('checkbox', "id$data->id", "$data->description");
-                    if ($z == 1) {
+                    if ($answered == 1) {
                         $mform->setDefault("id$data->id", array('checked' => '1'));
                     }
                 }
@@ -55,16 +61,23 @@ class edit extends moodleform {
               \core\notification::error(get_string("apierror", "block_edutechpreferences"));
         }
     }
-    // Custom validation should be added here.
-    public function validation($data, $files) {
-        return array();
-    }
-
-    public function checkdata($userid, $id) {
+    /**
+     * Checks in the database if the current student previously filled the form
+     * in case of failure returns a zero
+     * in case of success, will return the numer of rows prefilled by the user.
+     * @param int $userid  Moodle user's id
+     * @param int $id edutech_preferences row id
+     * @return int $query->count number of student's answers
+     */
+    private function checkdata($userid, $id) {
         global $DB;
         $id = "%$id%";
         $query = $DB->get_record_sql('SELECT COUNT(id) as count FROM {block_edutechpreferences} WHERE  userid = ?
         AND preferences LIKE ? ', [$userid, $id] );
-        return $query->count;
+        if (isset($query->count)) {
+            return $query->count;
+        } else {
+            return 0;
+        }
     }
 }
