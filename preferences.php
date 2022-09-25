@@ -60,7 +60,7 @@ if ($mform->is_cancelled()) {
         } catch (\Exception $e) {
             \core\notification::error(get_string("databaseerror", "block_edutechpreferences"));
         }
-    } else if ($rowid > 1) {
+    } else if ($rowid >= 1) {
         $dataobject = array(
             'id'            => $rowid,
             'userid'        => $USER->id,
