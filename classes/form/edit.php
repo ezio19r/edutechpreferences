@@ -43,7 +43,7 @@ class edit extends moodleform {
         $apis = new api();
         $mform = $this->_form; // Don't forget the underscore!
         $x = $apis->getapi();
-        if ($x != '0') {
+        if ($x != 0) {
             $y = json_decode($x);
             foreach ($y as $key) {
                 $mform->addElement('static', 'description', "<b>$key->preferences_are</b>");
