@@ -31,7 +31,7 @@ use block_edutechpreferences\report\getreport;
 $PAGE->set_url(new moodle_url('/blocks/edutechpreferences/coursereport.php'));
 require_login();
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title(title: get_string("preferencesreport", "block_edutechpreferences"));
+$PAGE->set_title(get_string("preferencesreport", "block_edutechpreferences"));
 $PAGE->set_heading(get_string("preferencesreport", "block_edutechpreferences"));
 $courseid = optional_param('id', 0, PARAM_INT);
 $PAGE->navbar->ignore_active();
