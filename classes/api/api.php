@@ -30,7 +30,7 @@ class api {
     /**
      * URL of the edutech repository
      */
-    const SERVER = 'https://repositorio.edutech-project.org/';
+    const SERVER = 'http://localhost/';
     /**
      * Attempt to connect to the Edutech Repositori to get the areas and preferences.
      * in case of failure returns a zero.
@@ -39,7 +39,7 @@ class api {
      * @return string
      */
     public function getapi() {
-        $apidir = ( self::SERVER . "api/v1/preferences-area/");
+        $apidir = ( self::SERVER . "php/ipa.php");
         $url = $apidir;
         try {
             $curl = curl_init($url);
