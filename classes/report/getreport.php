@@ -95,7 +95,7 @@ class getreport {
             $array['stats'] = $categoryarray;
             return $array;
         } else {
-            \core\notification::error("Ocurrio un error al intentar conectarse al servidor Edutech");
+            \core\notification::error(get_string("apierror","block_edutechpreferences"));
             return '';
         }
         return $array;
