@@ -127,9 +127,7 @@ class edutechblock {
     private function getfooterstudent($array) {
         $footer = '<div> <br/><label>'.get_string("yourpreferences", "block_edutechpreferences").':</label><br/>';
         foreach ($array as $x => $xvalue) {
-            if ($xvalue > 0) {
-                $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.$xvalue.'</span><br>';
-            }
+            $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.$xvalue.'</span><br>';
         }
         $footer .= '<div>';
         return $footer;
