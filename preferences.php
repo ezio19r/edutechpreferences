@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die();
 $PAGE->set_url(new moodle_url('/blocks/edutechpreferences/preferences.php'));
 require_login();
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title(title: get_string("preferencesreport", "block_edutechpreferences"));
+$PAGE->set_title(get_string("preferencesreport", "block_edutechpreferences"));
 $PAGE->set_heading(get_string("preferencesreport", "block_edutechpreferences"));
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('editpreferences', "block_edutechpreferences"));
@@ -40,7 +40,7 @@ global $DB;
 $mform = new edit();
 // Form processing and displaying is done here.
 if ($mform->is_cancelled()) {
-    redirect(url: $CFG->wwwroot . "/", message: get_string("databasediscarted", "block_edutechpreferences"));
+    redirect($CFG->wwwroot . "/", get_string("databasediscarted", "block_edutechpreferences"));
 } else if ($fromform = $mform->get_data()) {
     // In this case you process validated data. $mform->get_data() returns data posted in form.
     $recordtoinsert = new stdClass();
