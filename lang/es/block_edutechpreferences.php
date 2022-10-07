@@ -60,3 +60,5 @@ $string['id13'] = 'Manejo total con mouse';
 $string['id12'] = 'Manejo total con teclado';
 $string['id11'] = 'Evitar simulación/movimiento';
 $string['id10'] = 'Evitar luces parpadeantes';
+//Privacy
+$string['privacy:metadata'] = 'El plugin no envía información a https://repositorio.edutech-project.org';
