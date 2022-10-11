@@ -149,9 +149,13 @@ class getreport {
     public function responsestats($context, $id) {
         global $DB;
         $id = "%$id%";
-        $query = $DB->get_record_sql('SELECT COUNT(bl.id) as total FROM {role_assignments} ra
-        JOIN {user} u ON ra.userid = u.id JOIN {block_edutechpreferences} bl ON ra.userid = bl.userid
-        WHERE ra.contextid = ? AND ra.roleid = 5 AND bl.preferences LIKE ?', [$context, $id]);
+        $sql = "SELECT COUNT(bl.id) as total 
+                  FROM {role_assignments} ra
+                  JOIN {user} u ON ra.userid = u.id 
+                  JOIN {role_capabilities} rc ON ra.roleid = rc.roleid 
+                  JOIN {block_edutechpreferences} bl ON ra.userid = bl.userid
+                 WHERE ra.contextid = :context AND rc.capability = :capability AND bl.preferences LIKE :id";
+        $query = $DB->get_record_sql($sql, ['context'=>$context, 'capability'=>'block/edutechpreferences:view','id'=>$id]);
         $responsestats = (int)$query->total;
         return $responsestats;
     }
