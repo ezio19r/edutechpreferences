@@ -39,8 +39,13 @@ class edutechblock {
      */
     public function getreportsummary($context) {
         global $DB;
-        $query = $DB->get_records_sql('SELECT bl.preferences FROM {role_assignments} ra JOIN {user} u ON ra.userid = u.id
-          JOIN {block_edutechpreferences} bl ON ra.userid=bl.userid WHERE ra.contextid = ? AND ra.roleid = 5', [$context]);
+        $sql = "SELECT bl.preferences 
+                  FROM {role_assignments} ra 
+                  JOIN {user} u ON ra.userid = u.id 
+                  JOIN {role_capabilities} rc ON ra.roleid = rc.roleid 
+                  JOIN {block_edutechpreferences} bl ON ra.userid=bl.userid 
+                 WHERE ra.contextid = :context AND rc.capability = :capability";
+        $query = $DB->get_records_sql($sql, ['context'=>$context, 'capability'=>'block/edutechpreferences:view']);
         $stats = array('id3' => 0,
                       'id2' => 0,
                       'id1' => 0,
