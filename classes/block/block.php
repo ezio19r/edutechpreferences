@@ -37,7 +37,7 @@ class edutechblock {
      * @param int $context
      * @return string $footer
      */
-    public function getreportsummary($context) {
+    public function block_edutechpreferences_get_report_summary($context) {
         global $DB;
         $sql = "SELECT bl.preferences 
                   FROM {role_assignments} ra 
@@ -73,7 +73,7 @@ class edutechblock {
         }
         arsort($stats);
         $stats = array_slice($stats, 0, 5);
-        $footer = $this->getfooterprofessor($this->getareanames($stats, 'professor'));
+        $footer = $this->block_edutechpreferences_get_footer_professor($this->block_edutechpreferences_get_area_names($stats, 'professor'));
         return $footer;
     }
 
@@ -85,7 +85,7 @@ class edutechblock {
      * @param array $array
      * @return string $footer
      */
-    private function getfooterprofessor($array) {
+    private function block_edutechpreferences_get_footer_professor($array) {
         $footer = '<div> <br/><label>'.get_string("contentsuggestions", "block_edutechpreferences").':</label><br/>';
         foreach ($array as $x => $xvalue) {
             if ($xvalue > 0) {
@@ -104,7 +104,7 @@ class edutechblock {
      * @param int $context
      * @return string $footer
      */
-    public function getstudentpreferences() {
+    public function block_edutechpreferences_get_student_preferences() {
         global $DB;
         global $USER;
         $apis = new api();
@@ -114,9 +114,9 @@ class edutechblock {
         $preferencesnames = new stdClass();
         foreach ($query as $record) {
             $array = json_decode($record->preferences, true);
-            $preferencesnames = $this->getareanames($array, 'student');
+            $preferencesnames = $this->block_edutechpreferences_get_area_names($array, 'student');
         }
-        $footer = $this->getfooterstudent($preferencesnames);
+        $footer = $this->block_edutechpreferences_get_footer_student($preferencesnames);
         return $footer;
     }
 
@@ -128,7 +128,7 @@ class edutechblock {
      * @param array $array
      * @return string $footer
      */
-    private function getfooterstudent($array) {
+    private function block_edutechpreferences_get_footer_student($array) {
         $footer = '<div> <br/><label>'.get_string("yourpreferences", "block_edutechpreferences").':</label><br/>';
         foreach ($array as $x => $xvalue) {
             $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.$xvalue.'</span><br>';
@@ -145,7 +145,7 @@ class edutechblock {
      * @param string $type dependig if the block is shown to students or teachers
      * @return array $arraywithnames
      */
-    private function getareanames($array, $type) {
+    private function block_edutechpreferences_get_area_names($array, $type) {
         $names = array('id3' => get_string("id3", "block_edutechpreferences"),
                       'id2' => get_string("id2", "block_edutechpreferences"),
                       'id1' => get_string("id1", "block_edutechpreferences"),

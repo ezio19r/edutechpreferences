@@ -44,12 +44,12 @@ class block_edutechpreferences extends block_base {
             if ($id and $id > 1) {
                 $body = '<a href = "'.$CFG->wwwroot.'/blocks/edutechpreferences/coursereport.php?id='.$id.'">'
                 .get_string("openreport", "block_edutechpreferences").'</a><br/>';
-                $footer = $edutechblock->getreportsummary($context->id);
+                $footer = $edutechblock->block_edutechpreferences_get_report_summary($context->id);
             }
         } else if (has_capability('block/edutechpreferences:view', $context)) {
               $body = '<a href = "'.$CFG->wwwroot.'/blocks/edutechpreferences/preferences.php">'
               .get_string("editpreferences", "block_edutechpreferences").'</a><br/>';
-              $footer = $edutechblock->getstudentpreferences();
+              $footer = $edutechblock->block_edutechpreferences_get_student_preferences();
         }
         if ($this->content !== null) {
             return $this->content;
