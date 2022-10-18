@@ -73,8 +73,7 @@ class edutechblock {
         }
         arsort($stats);
         $stats = array_slice($stats, 0, 5);
-        $z = $this->getareanames($stats, 'professor');
-        $footer = $this->getfooterprofessor($z);
+        $footer = $this->getfooterprofessor($this->getareanames($stats, 'professor'));
         return $footer;
     }
 
