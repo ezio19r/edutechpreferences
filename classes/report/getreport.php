@@ -35,7 +35,7 @@ class getreport {
      * @param int $course  Moodle's course id
      * @return int $id Moodle's course id (verified)
      */
-    public function courseexists($courseid) {
+    public function block_edutechpreferences_course_exists($courseid) {
         global $DB;
         $id = 0;
         $query = $DB->get_record_sql('SELECT id FROM {course} WHERE id = ? ', [$courseid]);
@@ -51,9 +51,9 @@ class getreport {
      * @param int $id Moodle's course context
      * @return array $array with the summary stats of the course
      */
-    public function summarystats($courseid, $context) {
-        $totalstudents = $this->totalstudents($context->id);
-        $totalresponses = $this->totalresponses($context->id);
+    public function block_edutechpreferences_summary_stats($courseid, $context) {
+        $totalstudents = $this->block_edutechpreferences_total_students($context->id);
+        $totalresponses = $this->block_edutechpreferences_total_responses($context->id);
         $avg = 0;
         if ($totalstudents > 0) {
             $avg = ($totalresponses * 100) / $totalstudents;
@@ -72,11 +72,11 @@ class getreport {
      * @param int $context Moodle's course context
      * @return array $array with the full report stats of the course
      */
-    public function reportdata($courseid, $context) {
+    public function block_edutechpreferences_report_data($courseid, $context) {
         $apis = new api();
-        $preferenceareas = $apis->getapi();
+        $preferenceareas = $apis->block_edutechpreferences_get_api();
         $preferenceareas = json_decode($preferenceareas);
-        $totalstudents = $this->totalstudents($context->id);
+        $totalstudents = $this->block_edutechpreferences_total_students($context->id);
         $array = array();
         if ($preferenceareas != 0) {
             $categoryarray = [];
@@ -86,7 +86,7 @@ class getreport {
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
                     if ($totalstudents > 0) {
-                        $responsecount = ($this->responsestats($context->id, $id) * 100) / $totalstudents;
+                        $responsecount = ($this->block_edutechpreferences_response_stats($context->id, $id) * 100) / $totalstudents;
                     }
                     array_push($areaarray2, ['name' => $data->description, 'count' => $responsecount ]);
                 }
@@ -106,7 +106,7 @@ class getreport {
      * @param int $courseid  Moodle's course id
      * @return array $array the button text and href url
      */
-    public function buttoninfo($courseid) {
+    public function block_edutechpreferences_button_info($courseid) {
         global $CFG;
         $array = array('button' => ["name" => get_string("goback", "block_edutechpreferences"), "url"
          => "$CFG->wwwroot/course/view.php?id=$courseid"]);
@@ -118,7 +118,7 @@ class getreport {
      * @param int $context Moodle's course context
      * @return int $totalstudents
      */
-    public function totalstudents($context) {
+    public function block_edutechpreferences_total_students($context) {
         global $DB;
         $query = $DB->get_record_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
         JOIN {user} u ON ra.userid=u.id WHERE ra.contextid= ? AND ra.roleid = 5', [$context]);
@@ -131,7 +131,7 @@ class getreport {
      * @param int $context Moodle's course context
      * @return int $totalresponses
      */
-    public function totalresponses($context) {
+    public function block_edutechpreferences_total_responses($context) {
         global $DB;
         $query = $DB->get_record_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
         JOIN {user} u ON ra.userid = u.id JOIN {block_edutechpreferences} bl ON ra.userid = bl.userid
@@ -146,7 +146,7 @@ class getreport {
      * @param int $id preference area id
      * @return int $responsestats number of responses for each preference area
      */
-    public function responsestats($context, $id) {
+    public function block_edutechpreferences_response_stats($context, $id) {
         global $DB;
         $id = "%$id%";
         $sql = "SELECT COUNT(bl.id) as total 

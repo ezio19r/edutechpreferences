@@ -38,16 +38,16 @@ $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('course'), new moodle_url('/course/view.php?id='.$courseid.''));
 $PAGE->navbar->add(get_string('openreport', "block_edutechpreferences"));
 $report = new getreport();
-$courseexists = $report->courseexists($courseid);
+$courseexists = $report->block_edutechpreferences_course_exists($courseid);
 
 echo $OUTPUT->header();
 // Tries to get all the preferences for each student in the course and display statistical information.
 if ($courseexists > 1) {
     $context = context_course::instance($courseid);
     if ( has_capability('block/edutechpreferences:viewreport', $context)) {
-        $reportdata = $report->reportdata($courseid, $context);
-        $summarystats = $report->summarystats($courseid, $context);
-        $buttoninfo = $report->buttoninfo($courseid);
+        $reportdata = $report->block_edutechpreferences_report_data($courseid, $context);
+        $summarystats = $report->block_edutechpreferences_summary_stats($courseid, $context);
+        $buttoninfo = $report->block_edutechpreferences_button_info($courseid);
         $arrayfortemplate = $reportdata;
         $arrayfortemplate = array_merge($arrayfortemplate, $summarystats);
         $arrayfortemplate = array_merge($arrayfortemplate, $buttoninfo);
