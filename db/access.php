@@ -26,6 +26,15 @@
  */
 defined('MOODLE_INTERNAL') || die();
 $capabilities = array(
+      'block/edutechpreferences:myaddinstance' => array(
+          'captype' => 'write',
+          'contextlevel' => CONTEXT_SYSTEM,
+          'archetypes' => array(
+              'user' => CAP_ALLOW
+          ),
+
+          'clonepermissionsfrom' => 'moodle/my:manageblocks'
+      ),
       'block/edutechpreferences:addinstance' => array(
           'captype' => 'read',
           'contextlevel' => CONTEXT_COURSE
