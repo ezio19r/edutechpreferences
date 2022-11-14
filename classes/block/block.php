@@ -39,13 +39,13 @@ class edutechblock {
      */
     public function block_edutechpreferences_get_report_summary($context) {
         global $DB;
-        $sql = "SELECT bl.preferences 
-                  FROM {role_assignments} ra 
-                  JOIN {user} u ON ra.userid = u.id 
-                  JOIN {role_capabilities} rc ON ra.roleid = rc.roleid 
-                  JOIN {block_edutechpreferences} bl ON ra.userid=bl.userid 
+        $sql = "SELECT bl.preferences
+                  FROM {role_assignments} ra
+                  JOIN {user} u ON ra.userid = u.id
+                  JOIN {role_capabilities} rc ON ra.roleid = rc.roleid
+                  JOIN {block_edutechpreferences} bl ON ra.userid=bl.userid
                  WHERE ra.contextid = :context AND rc.capability = :capability";
-        $query = $DB->get_records_sql($sql, ['context'=>$context, 'capability'=>'block/edutechpreferences:view']);
+        $query = $DB->get_records_sql($sql, ['context' => $context, 'capability' => 'block/edutechpreferences:view']);
         $stats = array('id3' => 0,
                       'id2' => 0,
                       'id1' => 0,
@@ -73,7 +73,8 @@ class edutechblock {
         }
         arsort($stats);
         $stats = array_slice($stats, 0, 5);
-        $footer = $this->block_edutechpreferences_get_footer_professor($this->block_edutechpreferences_get_area_names($stats, 'professor'));
+        $footer = $this->block_edutechpreferences_get_footer_professor(
+            $this->block_edutechpreferences_get_area_names($stats, 'professor'));
         return $footer;
     }
 
@@ -163,9 +164,9 @@ class edutechblock {
         $arraywithnames = [];
         foreach ($array as $key => $value) {
             foreach ($names as $key2 => $value2) {
-                if ($key == $key2 and $type == 'student') {
+                if ($key == $key2 && $type == 'student') {
                     $arraywithnames = array_merge($arraywithnames, [$key => $value2]);
-                } else if ($key == $key2 and $type == 'professor') {
+                } else if ($key == $key2 && $type == 'professor') {
                     $arraywithnames = array_merge($arraywithnames, [$value2 => $value]);
                 }
             }

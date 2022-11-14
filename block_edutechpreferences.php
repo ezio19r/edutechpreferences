@@ -41,7 +41,7 @@ class block_edutechpreferences extends block_base {
         $body = '';
         $footer = '';
         if (has_capability('block/edutechpreferences:viewreport', $context)) {
-            if ($id and $id > 1) {
+            if ($id && $id > 1) {
                 $body = '<a href = "'.$CFG->wwwroot.'/blocks/edutechpreferences/coursereport.php?id='.$id.'">'
                 .get_string("openreport", "block_edutechpreferences").'</a><br/>';
                 $footer = $edutechblock->block_edutechpreferences_get_report_summary($context->id);
