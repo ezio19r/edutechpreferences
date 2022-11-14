@@ -60,9 +60,9 @@ $string['id13'] = 'Full mouse control';
 $string['id12'] = 'Full keyboard operation';
 $string['id11'] = 'Avoid simulation/motion';
 $string['id10'] = 'Avoid flashing lights';
-//Privacy
+// Privacy.
 $string['privacy:metadata'] = 'The plugin does not send any information to https://repositorio.edutech-project.org';
-//Capabilities
+// Capabilities.
 $string['edutechpreferences:myaddinstance'] = 'Add a new block edutechpreferences to the dashboard';
 $string['edutechpreferences:addinstance'] = 'Add a new block edutechpreferences';
 $string['edutechpreferences:view'] = 'View user preferences';
