@@ -56,7 +56,7 @@ class getreport {
         $totalresponses = $this->block_edutechpreferences_total_responses($context->id);
         $avg = 0;
         if ($totalstudents > 0) {
-            $avg = ($totalresponses * 100) / $totalstudents;
+            $avg = round(($totalresponses * 100) / $totalstudents);
         }
         $array = array('summarystats' => [
             ['name' => get_string("totalstudents", "block_edutechpreferences"), 'number' => $totalstudents],
@@ -86,8 +86,7 @@ class getreport {
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
                     if ($totalstudents > 0) {
-                        $responsecount = ($this->block_edutechpreferences_response_stats($context->id, $id) * 100) / $totalstudents;
-                    }
+                        $responsecount = round(($this->block_edutechpreferences_response_stats($context->id, $id) * 100) / $totalstudents);
                     array_push($areaarray2, ['name' => $data->description, 'count' => $responsecount ]);
                 }
                 array_push($categoryarray, ['category' => $key->preferences_are, 'areas' => $areaarray2]);
@@ -120,8 +119,12 @@ class getreport {
      */
     public function block_edutechpreferences_total_students($context) {
         global $DB;
-        $query = $DB->get_record_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
-        JOIN {user} u ON ra.userid=u.id WHERE ra.contextid= ? AND ra.roleid = 5', [$context]);
+        $sql = "SELECT count(ra.userid) as total
+                  FROM {role_assignments} ra
+                  JOIN {user} u ON ra.userid = u.id
+                  JOIN {role_capabilities} rc ON ra.roleid = rc.roleid
+                 WHERE ra.contextid = :context AND rc.capability = :capability";
+        $query = $DB->get_record_sql($sql, ['context' => $context, 'capability' => 'block/edutechpreferences:view']);
         $totalstudents = (int)$query->total;
         return $totalstudents;
     }
@@ -133,9 +136,13 @@ class getreport {
      */
     public function block_edutechpreferences_total_responses($context) {
         global $DB;
-        $query = $DB->get_record_sql('SELECT count(ra.userid) as total FROM {role_assignments} ra
-        JOIN {user} u ON ra.userid = u.id JOIN {block_edutechpreferences} bl ON ra.userid = bl.userid
-        WHERE ra.contextid = ? AND ra.roleid = 5', [$context]);
+        $sql = "SELECT count(ra.userid) as total
+                  FROM {role_assignments} ra
+                  JOIN {user} u ON ra.userid = u.id
+                  JOIN {role_capabilities} rc ON ra.roleid = rc.roleid
+                  JOIN {block_edutechpreferences} bl ON ra.userid = bl.userid
+                 WHERE ra.contextid = :context AND rc.capability = :capability";
+        $query = $DB->get_record_sql($sql, ['context' => $context, 'capability' => 'block/edutechpreferences:view']);
         $totalresponses = (int)$query->total;
         return $totalresponses;
     }
