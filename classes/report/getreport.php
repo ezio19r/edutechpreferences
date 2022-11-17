@@ -86,7 +86,11 @@ class getreport {
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
                     if ($totalstudents > 0) {
-                        $responsecount = round(($this->block_edutechpreferences_response_stats($context->id, $id) * 100) / $totalstudents);
+                        $responsecount = round(
+                            ($this->block_edutechpreferences_response_stats($context->id, $id) * 100)
+                            /
+                            $totalstudents
+                        );
                     }
                     array_push($areaarray2, ['name' => $data->description, 'count' => $responsecount ]);
                 }
