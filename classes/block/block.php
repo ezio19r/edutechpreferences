@@ -37,10 +37,15 @@ class edutechblock {
      * @param int $context
      * @return string $footer
      */
-    public function getreportsummary($context) {
+    public function block_edutechpreferences_get_report_summary($context) {
         global $DB;
-        $query = $DB->get_records_sql('SELECT bl.preferences FROM {role_assignments} ra JOIN {user} u ON ra.userid = u.id
-          JOIN {block_edutechpreferences} bl ON ra.userid=bl.userid WHERE ra.contextid = ? AND ra.roleid = 5', [$context]);
+        $sql = "SELECT bl.preferences
+                  FROM {role_assignments} ra
+                  JOIN {user} u ON ra.userid = u.id
+                  JOIN {role_capabilities} rc ON ra.roleid = rc.roleid
+                  JOIN {block_edutechpreferences} bl ON ra.userid=bl.userid
+                 WHERE ra.contextid = :context AND rc.capability = :capability";
+        $query = $DB->get_records_sql($sql, ['context' => $context, 'capability' => 'block/edutechpreferences:view']);
         $stats = array('id3' => 0,
                       'id2' => 0,
                       'id1' => 0,
@@ -68,8 +73,8 @@ class edutechblock {
         }
         arsort($stats);
         $stats = array_slice($stats, 0, 5);
-        $z = $this->getareanames($stats, 'professor');
-        $footer = $this->getfooterprofessor($z);
+        $footer = $this->block_edutechpreferences_get_footer_professor(
+            $this->block_edutechpreferences_get_area_names($stats, 'professor'));
         return $footer;
     }
 
@@ -81,7 +86,7 @@ class edutechblock {
      * @param array $array
      * @return string $footer
      */
-    private function getfooterprofessor($array) {
+    private function block_edutechpreferences_get_footer_professor($array) {
         $footer = '<div> <br/><label>'.get_string("contentsuggestions", "block_edutechpreferences").':</label><br/>';
         foreach ($array as $x => $xvalue) {
             if ($xvalue > 0) {
@@ -100,7 +105,7 @@ class edutechblock {
      * @param int $context
      * @return string $footer
      */
-    public function getstudentpreferences() {
+    public function block_edutechpreferences_get_student_preferences() {
         global $DB;
         global $USER;
         $apis = new api();
@@ -110,9 +115,9 @@ class edutechblock {
         $preferencesnames = new stdClass();
         foreach ($query as $record) {
             $array = json_decode($record->preferences, true);
-            $preferencesnames = $this->getareanames($array, 'student');
+            $preferencesnames = $this->block_edutechpreferences_get_area_names($array, 'student');
         }
-        $footer = $this->getfooterstudent($preferencesnames);
+        $footer = $this->block_edutechpreferences_get_footer_student($preferencesnames);
         return $footer;
     }
 
@@ -124,12 +129,10 @@ class edutechblock {
      * @param array $array
      * @return string $footer
      */
-    private function getfooterstudent($array) {
+    private function block_edutechpreferences_get_footer_student($array) {
         $footer = '<div> <br/><label>'.get_string("yourpreferences", "block_edutechpreferences").':</label><br/>';
         foreach ($array as $x => $xvalue) {
-            if ($xvalue > 0) {
-                $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.$xvalue.'</span><br>';
-            }
+            $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.$xvalue.'</span><br>';
         }
         $footer .= '<div>';
         return $footer;
@@ -143,7 +146,7 @@ class edutechblock {
      * @param string $type dependig if the block is shown to students or teachers
      * @return array $arraywithnames
      */
-    private function getareanames($array, $type) {
+    private function block_edutechpreferences_get_area_names($array, $type) {
         $names = array('id3' => get_string("id3", "block_edutechpreferences"),
                       'id2' => get_string("id2", "block_edutechpreferences"),
                       'id1' => get_string("id1", "block_edutechpreferences"),
@@ -161,9 +164,9 @@ class edutechblock {
         $arraywithnames = [];
         foreach ($array as $key => $value) {
             foreach ($names as $key2 => $value2) {
-                if ($key == $key2 and $type == 'student') {
+                if ($key == $key2 && $type == 'student') {
                     $arraywithnames = array_merge($arraywithnames, [$key => $value2]);
-                } else if ($key == $key2 and $type == 'professor') {
+                } else if ($key == $key2 && $type == 'professor') {
                     $arraywithnames = array_merge($arraywithnames, [$value2 => $value]);
                 }
             }

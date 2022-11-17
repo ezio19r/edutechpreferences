@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
 use block_edutechpreferences\api\api;
 class edit extends moodleform {
     /**
-     * Generates the preferences form with the data obtained of the API/getapi()
+     * Generates the preferences form with the data obtained of the API/block_edutechpreferences_get_api()
      * if the form was previously filled by the current student, it will be prefilled with the stored data
      * in case of failure prints a notification with the error
      * in case of success, the form will be shown.
@@ -42,14 +42,14 @@ class edit extends moodleform {
         global $CFG;
         $apis = new api();
         $mform = $this->_form; // Don't forget the underscore!
-        $x = $apis->getapi();
-        if ($x != 0) {
+        $x = $apis->block_edutechpreferences_get_api();
+        if ($x != '0') {
             $y = json_decode($x);
             foreach ($y as $key) {
                 $mform->addElement('static', 'description', "<b>$key->preferences_are</b>");
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
-                    $answered = $this->checkdata($USER->id, $id);
+                    $answered = $this->block_edutechpreferences_check_data($USER->id, $id);
                     $mform->addElement('checkbox', "id$data->id", "$data->description");
                     if ($answered == 1) {
                         $mform->setDefault("id$data->id", array('checked' => '1'));
@@ -69,7 +69,7 @@ class edit extends moodleform {
      * @param int $id edutech_preferences row id
      * @return int $query->count number of student's answers
      */
-    private function checkdata($userid, $id) {
+    private function block_edutechpreferences_check_data($userid, $id) {
         global $DB;
         $id = "%$id%";
         $query = $DB->get_record_sql('SELECT COUNT(id) as count FROM {block_edutechpreferences} WHERE  userid = ?

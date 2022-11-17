@@ -24,35 +24,19 @@
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
-$capabilities = array(
-      'block/edutechpreferences:myaddinstance' => array(
-          'captype' => 'write',
-          'contextlevel' => CONTEXT_SYSTEM,
-          'archetypes' => array(
-              'user' => CAP_ALLOW
-          ),
+namespace edutechpreferences\privacy;
 
-          'clonepermissionsfrom' => 'moodle/my:manageblocks'
-      ),
-      'block/edutechpreferences:addinstance' => array(
-          'captype' => 'read',
-          'contextlevel' => CONTEXT_COURSE
-      ),
-      'block/edutechpreferences:view' => array(
-          'captype' => 'read',
-          'contextlevel' => CONTEXT_COURSE,
-          'archetypes' => array(
-              'student' => CAP_ALLOW
-          )
-      ),
-      'block/edutechpreferences:viewreport' => array(
-          'captype' => 'read',
-          'contextlevel' => CONTEXT_COURSE,
-          'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-          )
-      )
-);
+class provider implements
+    // This plugin does not store any personal user data.
+    \core_privacy\local\metadata\null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason(): string {
+        return 'privacy:metadata';
+    }
+}

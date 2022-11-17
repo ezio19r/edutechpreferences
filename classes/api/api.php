@@ -38,7 +38,7 @@ class api {
      * @throws \repository_exception
      * @return string
      */
-    public function getapi() {
+    public function block_edutechpreferences_get_api() {
         $apidir = ( self::SERVER . "api/v1/preferences-area/");
         $url = $apidir;
         try {
