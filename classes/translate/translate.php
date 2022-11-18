@@ -46,11 +46,11 @@ class translate{
                 break;
 
             case 'Recursos Digitales Auditivos':
-                $translate = 'Auditory Digital Resources.';
+                $translate = 'Sounds Digital Resources';
                 break;
             
             case 'información mayoritariamente auditivo':
-                $translate = 'mostly auditory information';
+                $translate = 'Mostly audible information';
                 break;
 
             case 'Evitar sonido de fondo sin control':
