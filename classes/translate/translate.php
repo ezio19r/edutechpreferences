@@ -27,6 +27,10 @@
 namespace block_edutechpreferences\translate;
 
 class translate{
+    /**
+    * Translates the strings received from the API to English.
+    * @param string $preference 
+    */
     public function block_edutechpreferences_translate($preference) {
         switch ($preference){
             case 'Recursos Digitales Visuales':
