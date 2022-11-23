@@ -88,14 +88,14 @@ class getreport {
         if ($preferenceareas != 0) {
             $categoryarray = [];
             foreach ($preferenceareas as $key) {
-                $preferences_are = str_starts_with($SESSION->lang, 'es')
+                $preferences_are = strpos($SESSION->lang, 'es') === 0
                     ? $key->preferences_are
                     : $translate->block_edutechpreferences_translate($key->preferences_are);
                 $areaarray2 = [];
                 $responsecount = 0;
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
-                    $description = str_starts_with($SESSION->lang, 'es')
+                    $description = strpos($SESSION->lang, 'es') === 0
                         ? $data->description
                         : $translate->block_edutechpreferences_translate($data->description);
                     if ($totalstudents > 0) {
