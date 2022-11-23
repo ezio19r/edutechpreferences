@@ -46,17 +46,17 @@ class edit extends moodleform {
         $apis = new api();
         $translate = new translate();
         $mform = $this->_form; // Don't forget the underscore!
-        $x = $apis->block_edutechpreferences_get_api();
-        if ($x != '0') {
-            $y = json_decode($x);
-            foreach ($y as $key) {
-                $preferences_are = str_starts_with($SESSION->lang, 'es')
+        $apiresponse = $apis->block_edutechpreferences_get_api();
+        if ($apiresponse != '0') {
+            $decapiresponse = json_decode($apiresponse);
+            foreach ($decapiresponse as $key) {
+                $preferences_are = substr($SESSION->lang, 0, 1) === 'es'
                     ? $key->preferences_are
                     : $translate->block_edutechpreferences_translate($key->preferences_are);
                 $mform->addElement('static', 'description', "<b>$preferences_are</b>");
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
-                    $description = str_starts_with($SESSION->lang, 'es')
+                    $description = substr($SESSION->lang, 0, 1) === 'es'
                         ? $data->description
                         : $translate->block_edutechpreferences_translate($data->description);
                     $answered = $this->block_edutechpreferences_check_data($USER->id, $id);
