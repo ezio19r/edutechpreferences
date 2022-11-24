@@ -28,10 +28,31 @@ namespace block_edutechpreferences\translate;
 
 class translate{
     /**
-    * Translates the strings received from the API to English.
+    * Check the language in the SESSION or of the USER if lang in SESSION is not set,
+    * uses the function block_edutechpreferences_translations to get the translation if is necessary
     * @param string $preference 
+    * @return string $preferencetrans
     */
-    public function block_edutechpreferences_translate($preference) {
+    public function block_edutechpreferences_translator($preference){
+        global $SESSION;
+        global $USER;
+        if (isset($SESSION->lang)){
+            $preferencetrans = substr($SESSION->lang, 0, 2) === 'es' 
+            ? $preference
+            : $this->block_edutechpreferences_translations($preference);
+        } else {
+            $preferencetrans = substr($USER->lang, 0, 2) === 'es' 
+            ? $preference
+            : $this->block_edutechpreferences_translations($preference);
+        }
+        return $preferencetrans;
+    }
+    /**
+    * Translates the preference
+    * @param string $preference 
+    * @return string $translation
+    */
+    public function block_edutechpreferences_translations($preference) {
         switch ($preference){
             case 'Recursos Digitales Visuales':
                 $translate = 'Visual Digital Resources';

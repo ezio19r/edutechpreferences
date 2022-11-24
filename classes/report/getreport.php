@@ -79,6 +79,7 @@ class getreport {
      */
     public function block_edutechpreferences_report_data($courseid, $context) {
         global $SESSION;
+        global $USER;
         $apis = new api();
         $translate = new translate();
         $preferenceareas = $apis->block_edutechpreferences_get_api();
@@ -88,16 +89,12 @@ class getreport {
         if ($preferenceareas != 0) {
             $categoryarray = [];
             foreach ($preferenceareas as $key) {
-                $preferences_are = substr($SESSION->lang, 0, 1) === 'es'
-                    ? $key->preferences_are
-                    : $translate->block_edutechpreferences_translate($key->preferences_are);
+                $preferences_are = $translate->block_edutechpreferences_translator($key->preferences_are);
                 $areaarray2 = [];
                 $responsecount = 0;
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
-                    $description = substr($SESSION->lang, 0, 1) === 'es'
-                        ? $data->description
-                        : $translate->block_edutechpreferences_translate($data->description);
+                    $description =  $translate->block_edutechpreferences_translator($data->description);
                     if ($totalstudents > 0) {
                         $responsecount = round(
                             ($this->block_edutechpreferences_response_stats($context->id, $id) * 100)
