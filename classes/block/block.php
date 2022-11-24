@@ -110,7 +110,6 @@ class edutechblock {
     public function block_edutechpreferences_get_student_preferences() {
         global $DB;
         global $USER;
-        $apis = new api();
         $query = $DB->get_records_sql('SELECT preferences FROM  {block_edutechpreferences} bl
           WHERE bl.userid = ? LIMIT 1', [$USER->id]);
         $array = new stdClass();
