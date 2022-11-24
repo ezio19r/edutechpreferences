@@ -40,9 +40,9 @@ class getreport {
     public function block_edutechpreferences_course_exists($courseid) {
         global $DB;
         $id = 0;
-        $query = $DB->get_record_sql('SELECT id 
-                                        FROM {course} 
-                                        WHERE id = ? ', 
+        $query = $DB->get_record_sql('SELECT id
+                                        FROM {course}
+                                        WHERE id = ? ',
                                         [$courseid]);
         if ((int)$query->id > 1) {
             $id = (int)$query->id;
@@ -89,12 +89,12 @@ class getreport {
         if ($preferenceareas != 0) {
             $categoryarray = [];
             foreach ($preferenceareas as $key) {
-                $preferences_are = $translate->block_edutechpreferences_translator($key->preferences_are);
+                $preferencesarea = $translate->block_edutechpreferences_translator($key->preferencesarea);
                 $areaarray2 = [];
                 $responsecount = 0;
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
-                    $description =  $translate->block_edutechpreferences_translator($data->description);
+                    $description = $translate->block_edutechpreferences_translator($data->description);
                     if ($totalstudents > 0) {
                         $responsecount = round(
                             ($this->block_edutechpreferences_response_stats($context->id, $id) * 100)
@@ -104,7 +104,7 @@ class getreport {
                     }
                     array_push($areaarray2, ['name' => $description, 'count' => $responsecount ]);
                 }
-                array_push($categoryarray, ['category' => $preferences_are, 'areas' => $areaarray2]);
+                array_push($categoryarray, ['category' => $preferencesarea, 'areas' => $areaarray2]);
             }
             $array['stats'] = $categoryarray;
             return $array;

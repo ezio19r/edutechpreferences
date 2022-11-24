@@ -86,11 +86,13 @@ class edutechblock {
      * @param array $array
      * @return string $footer
      */
-    private function block_edutechpreferences_get_footer_professor($array) {
+    private function block_edutechpreferences_get_footer_professor($preferences) {
         $footer = '<div> <br/><label>'.get_string("contentsuggestions", "block_edutechpreferences").':</label><br/>';
-        foreach ($array as $x => $xvalue) {
-            if ($xvalue > 0) {
-                $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.$x.'('.$xvalue.')</span><br>';
+        foreach ($preferences as $preference => $preferencevalue) {
+            if ($preferencevalue > 0) {
+                $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.
+                $preference.'('.$preferencevalue.')
+                </span><br>';
             }
         }
         $footer .= '<div>';

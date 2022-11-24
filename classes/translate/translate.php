@@ -26,98 +26,82 @@
  */
 namespace block_edutechpreferences\translate;
 
-class translate{
+class translate {
     /**
-    * Check the language in the SESSION or of the USER if lang in SESSION is not set,
-    * uses the function block_edutechpreferences_translations to get the translation if is necessary
-    * @param string $preference 
-    * @return string $preferencetrans
-    */
-    public function block_edutechpreferences_translator($preference){
+     * Check the language in the SESSION or of the USER if lang in SESSION is not set,
+     * uses the function block_edutechpreferences_translations to get the translation if is necessary
+     * @param string $preference
+     * @return string $preferencetrans
+     */
+    public function block_edutechpreferences_translator($preference) {
         global $SESSION;
         global $USER;
-        if (isset($SESSION->lang)){
-            $preferencetrans = substr($SESSION->lang, 0, 2) === 'es' 
+        if (isset($SESSION->lang)) {
+            $preferencetrans = substr($SESSION->lang, 0, 2) === 'es'
             ? $preference
             : $this->block_edutechpreferences_translations($preference);
         } else {
-            $preferencetrans = substr($USER->lang, 0, 2) === 'es' 
+            $preferencetrans = substr($USER->lang, 0, 2) === 'es'
             ? $preference
             : $this->block_edutechpreferences_translations($preference);
         }
         return $preferencetrans;
     }
     /**
-    * Translates the preference
-    * @param string $preference 
-    * @return string $translation
-    */
+     * Translates the preference
+     * @param string $preference
+     * @return string $translation
+     */
     public function block_edutechpreferences_translations($preference) {
         switch ($preference){
             case 'Recursos Digitales Visuales':
                 $translate = 'Visual Digital Resources';
                 break;
-
             case 'Descripción de texto para imágenes':
                 $translate = 'Text description for images';
                 break;
-
             case 'Evitar recursos con dependencia de color':
                 $translate = 'Avoid resources with color dependence';
                 break;
-
             case 'Información mayoritariamente visual':
                 $translate = 'Mostly visual information';
                 break;
-
             case 'Recursos Digitales Auditivos':
                 $translate = 'Sounds Digital Resources';
                 break;
-            
             case 'información mayoritariamente auditivo':
                 $translate = 'Mostly audible information';
                 break;
-
             case 'Evitar sonido de fondo sin control':
                 $translate = 'Avoid uncontrolled background sound';
                 break;
-
             case 'Transcripción para audio y video':
                 $translate = 'Transcription for audio and video';
                 break;
-
             case 'Descripción de audio para video':
                 $translate = 'Audio description for video';
                 break;
-
             case 'Subtítulos para audio y video':
                 $translate = 'Subtitles for audio and video';
                 break;
-
             case 'Recursos Digitales Textuales':
                 $translate = 'Textual Digital Resources';
                 break;
-
             case 'Información mayoritariamente textual':
                 $translate = 'Mostly textual information';
                 break;
-
             case 'Nivel De Interactividad':
                 $translate = 'Level Of Interactivity';
                 break;
-
             case 'Manejo total con mouse':
                 $translate = 'Full mouse operation';
                 break;
-
             case 'Manejo total con teclado':
                 $translate = 'Full keyboard operation';
                 break;
-
             case 'Evitar simulación/movimiento':
                 $translate = 'Avoid simulation/motion';
                 break;
-
             case 'Evitar luces parpadeantes':
                 $translate = 'Avoid flickering lights';
                 break;

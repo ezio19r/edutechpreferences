@@ -50,8 +50,8 @@ class edit extends moodleform {
         if ($apiresponse != '0') {
             $decapiresponse = json_decode($apiresponse);
             foreach ($decapiresponse as $key) {
-                $preferences_are = $translate->block_edutechpreferences_translator($key->preferences_are);
-                $mform->addElement('static', 'description', "<b>$preferences_are</b>");
+                $preferencesarea = $translate->block_edutechpreferences_translator($key->preferencesarea);
+                $mform->addElement('static', 'description', "<b>$preferencesarea</b>");
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
                     $description = $translate->block_edutechpreferences_translator($data->description);
