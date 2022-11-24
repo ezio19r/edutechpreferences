@@ -61,7 +61,7 @@ $string['id12'] = 'Full keyboard operation';
 $string['id11'] = 'Avoid simulation/motion';
 $string['id10'] = 'Avoid flashing lights';
 // Privacy.
-$string['privacy:metadata'] = 'The plugin does not send any information to https://repositorio.edutech-project.org';
+$string['privacy:metadata'] = 'This plugin does not send any information to https://repositorio.edutech-project.org or any other location outside moodle';
 // Capabilities.
 $string['edutechpreferences:myaddinstance'] = 'Add a new block edutechpreferences to the dashboard';
 $string['edutechpreferences:addinstance'] = 'Add a new block edutechpreferences';

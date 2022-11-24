@@ -61,7 +61,7 @@ $string['id12'] = 'Manejo total con teclado';
 $string['id11'] = 'Evitar simulación/movimiento';
 $string['id10'] = 'Evitar luces parpadeantes';
 // Privacy.
-$string['privacy:metadata'] = 'El plugin no envía información a https://repositorio.edutech-project.org';
+$string['privacy:metadata'] = 'Este plugin no envía información a https://repositorio.edutech-project.org o ninguna otro ubicación fuera de moodle';
 // Capabilities.
 $string['edutechpreferences:myaddinstance'] = 'Añadir un nuevo bloque de edutechpreferences al tablero';
 $string['edutechpreferences:addinstance'] = 'Añadir un nuevo bloque de edutechpreferences';
