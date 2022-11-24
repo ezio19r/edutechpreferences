@@ -41,8 +41,6 @@ class edit extends moodleform {
      */
     public function definition() {
         global $USER;
-        global $CFG;
-        global $SESSION;
         $apis = new api();
         $translate = new translate();
         $mform = $this->_form; // Don't forget the underscore!
