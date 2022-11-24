@@ -78,8 +78,6 @@ class getreport {
      * @return array $array with the full report stats of the course
      */
     public function block_edutechpreferences_report_data($courseid, $context) {
-        global $SESSION;
-        global $USER;
         $apis = new api();
         $translate = new translate();
         $preferenceareas = $apis->block_edutechpreferences_get_api();
@@ -89,7 +87,7 @@ class getreport {
         if ($preferenceareas != 0) {
             $categoryarray = [];
             foreach ($preferenceareas as $key) {
-                $preferencesarea = $translate->block_edutechpreferences_translator($key->preferencesarea);
+                $preferencesarea = $translate->block_edutechpreferences_translator($key->preferences_are);
                 $areaarray2 = [];
                 $responsecount = 0;
                 foreach ($key->preferences as $data) {
