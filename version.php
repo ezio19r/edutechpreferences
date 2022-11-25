@@ -27,7 +27,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 $plugin->component = 'block_edutechpreferences';
-$plugin->version = 2022032200;
-$plugin->requires = 2021051100;
+$plugin->version = 2022112400;
+$plugin->requires = 2021051700;
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v1.0';
+$plugin->release = 'v1.0.01';
+
