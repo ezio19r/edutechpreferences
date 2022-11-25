@@ -44,7 +44,7 @@ class edit extends moodleform {
         $apis = new api();
         $translate = new translate();
         $mform = $this->_form; // Don't forget the underscore!
-        $apiresponse = $apis->block_edutechpreferences_get_api();
+        $apiresponse = $apis->block_edutechpreferences_get_list();
         if ($apiresponse != '0') {
             $decapiresponse = json_decode($apiresponse);
             foreach ($decapiresponse as $key) {

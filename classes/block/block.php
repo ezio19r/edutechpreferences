@@ -83,15 +83,15 @@ class edutechblock {
      * to be presented in the block's footer (teacher's view).
      * in case of failure returns an empty string.
      * in case of success returns a string with the html for the block's footer.
-     * @param array $array
+     * @param array $precerenceslist
      * @return string $footer
      */
-    private function block_edutechpreferences_get_footer_professor($preferences) {
+    private function block_edutechpreferences_get_footer_professor($preferenceslist) {
         $footer = '<div> <br/><label>'.get_string("contentsuggestions", "block_edutechpreferences").':</label><br/>';
-        foreach ($preferences as $preference => $preferencevalue) {
-            if ($preferencevalue > 0) {
+        foreach ($preferenceslist as $key => $preferencesvalues) {
+            if ($preferencesvalues > 0) {
                 $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.
-                $preference.'('.$preferencevalue.')
+                $key.'('.$preferencesvalues.')
                 </span><br>';
             }
         }
@@ -127,13 +127,13 @@ class edutechblock {
      * to be presented in the block's footer (student's view).
      * in case of failure returns an empty string.
      * in case of success returns a string with the html code for the block's footer.
-     * @param array $array
+     * @param array $preferencesnames
      * @return string $footer
      */
-    private function block_edutechpreferences_get_footer_student($array) {
+    private function block_edutechpreferences_get_footer_student($preferencesnames) {
         $footer = '<div> <br/><label>'.get_string("yourpreferences", "block_edutechpreferences").':</label><br/>';
-        foreach ($array as $x => $xvalue) {
-            $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.$xvalue.'</span><br>';
+        foreach ($preferencesnames as $key => $preferencesvalues) {
+            $footer .= '<span class="badge badge-pill badge-light" style="margin:2px;">'.$preferencesvalues.'</span><br>';
         }
         $footer .= '<div>';
         return $footer;
@@ -143,11 +143,11 @@ class edutechblock {
      * Given the preferences id's previously stored in the database, generates an
      * array with the area names in english or spanish.
      * In case of success returns an array with the id's and area names.
-     * @param array $array with each preference id
+     * @param array $preferencesids with each preference id
      * @param string $type dependig if the block is shown to students or teachers
      * @return array $arraywithnames
      */
-    private function block_edutechpreferences_get_area_names($array, $type) {
+    private function block_edutechpreferences_get_area_names($preferencesids, $type) {
         $names = array('id3' => get_string("id3", "block_edutechpreferences"),
                       'id2' => get_string("id2", "block_edutechpreferences"),
                       'id1' => get_string("id1", "block_edutechpreferences"),
@@ -163,7 +163,7 @@ class edutechblock {
                       'id10' => get_string("id10", "block_edutechpreferences")
           );
         $arraywithnames = [];
-        foreach ($array as $key => $value) {
+        foreach ($preferencesids as $key => $value) {
             foreach ($names as $key2 => $value2) {
                 if ($key == $key2 && $type == 'student') {
                     $arraywithnames = array_merge($arraywithnames, [$key => $value2]);
