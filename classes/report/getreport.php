@@ -80,7 +80,7 @@ class getreport {
     public function block_edutechpreferences_report_data($courseid, $context) {
         $apis = new api();
         $translate = new translate();
-        $preferenceareas = $apis->block_edutechpreferences_get_api();
+        $preferenceareas = $apis->block_edutechpreferences_get_list();
         $preferenceareas = json_decode($preferenceareas);
         $totalstudents = $this->block_edutechpreferences_total_students($context->id);
         $array = array();
