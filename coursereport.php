@@ -56,6 +56,6 @@ if ($courseexists > 1) {
         \core\notification::error(get_string("donthavepermissions", "block_edutechpreferences"));
     }
 } else {
-      \core\notification::error(get_string("courseerror", "block_edutechpreferences"));
+    redirect($CFG->wwwroot . "/");
 }
 echo $OUTPUT->footer();

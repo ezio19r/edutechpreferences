@@ -28,7 +28,9 @@ defined('MOODLE_INTERNAL') || die();
 // Moodleform is defined in formslib.php.
 require_once("$CFG->libdir/formslib.php");
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
+require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/translate/translate.php');
 use block_edutechpreferences\api\api;
+use block_edutechpreferences\translate\translate;
 class edit extends moodleform {
     /**
      * Generates the preferences form with the data obtained of the API/block_edutechpreferences_get_api()
@@ -39,18 +41,20 @@ class edit extends moodleform {
      */
     public function definition() {
         global $USER;
-        global $CFG;
         $apis = new api();
+        $translate = new translate();
         $mform = $this->_form; // Don't forget the underscore!
-        $x = $apis->block_edutechpreferences_get_api();
-        if ($x != '0') {
-            $y = json_decode($x);
-            foreach ($y as $key) {
-                $mform->addElement('static', 'description', "<b>$key->preferences_are</b>");
+        $apiresponse = $apis->block_edutechpreferences_get_list();
+        if ($apiresponse != '0') {
+            $decapiresponse = json_decode($apiresponse);
+            foreach ($decapiresponse as $key) {
+                $preferencesarea = $translate->block_edutechpreferences_translator($key->preferences_are);
+                $mform->addElement('static', 'description', "<b>$preferencesarea</b>");
                 foreach ($key->preferences as $data) {
                     $id = json_encode("id$data->id");
+                    $description = $translate->block_edutechpreferences_translator($data->description);
                     $answered = $this->block_edutechpreferences_check_data($USER->id, $id);
-                    $mform->addElement('checkbox', "id$data->id", "$data->description");
+                    $mform->addElement('checkbox', "id$data->id", "$description");
                     if ($answered == 1) {
                         $mform->setDefault("id$data->id", array('checked' => '1'));
                     }
