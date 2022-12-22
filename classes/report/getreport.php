@@ -44,7 +44,7 @@ class getreport {
                                         FROM {course}
                                         WHERE id = ? ',
                                         [$courseid]);
-        if ((int)$query->id > 1) {
+        if (isset($query->id) && (int)$query->id > 1) {
             $id = (int)$query->id;
         }
         return $id;

@@ -27,7 +27,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/block/block.php');
-require_login();
 
 class block_edutechpreferences extends block_base {
     public function init() {

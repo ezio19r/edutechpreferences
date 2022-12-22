@@ -42,7 +42,7 @@ $courseexists = $report->block_edutechpreferences_course_exists($courseid);
 
 echo $OUTPUT->header();
 // Tries to get all the preferences for each student in the course and display statistical information.
-if ($courseexists > 1) {
+if (isset($courseexists) && $courseexists > 1) {
     $context = context_course::instance($courseid);
     if ( has_capability('block/edutechpreferences:viewreport', $context)) {
         $reportdata = $report->block_edutechpreferences_report_data($courseid, $context);
@@ -56,6 +56,6 @@ if ($courseexists > 1) {
         \core\notification::error(get_string("donthavepermissions", "block_edutechpreferences"));
     }
 } else {
-    redirect($CFG->wwwroot . "/");
+    \core\notification::error(get_string("courseerror", "block_edutechpreferences"));
 }
 echo $OUTPUT->footer();
