@@ -22,6 +22,7 @@
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_edutechpreferences\api;
@@ -30,7 +31,8 @@ class api {
     /**
      * URL of the edutech repository
      */
-    const SERVER = 'https://repositorio.edutech-project.org/';
+    // const SERVER = 'https://repositorio.edutech-project.org/';
+    const SERVER = 'http://localhost/edutech/';
     /**
      * Attempt to connect to the Edutech Repositori to get the areas and preferences.
      * in case of failure returns a zero.
@@ -39,7 +41,8 @@ class api {
      * @return string
      */
     public function block_edutechpreferences_get_list() {
-        $apidir = ( self::SERVER . "api/v1/preferences-area/");
+        // $apidir = ( self::SERVER . "api/v1/preferences-area/");
+        $apidir = ( self::SERVER . "api.php");
         $url = $apidir;
         try {
             $curl = curl_init($url);

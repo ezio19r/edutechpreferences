@@ -22,8 +22,10 @@
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace block_edutechpreferences\edit;
 defined('MOODLE_INTERNAL') || die();
 // Moodleform is defined in formslib.php.
 require_once("$CFG->libdir/formslib.php");
@@ -31,6 +33,9 @@ require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/translate/translate.php');
 use block_edutechpreferences\api\api;
 use block_edutechpreferences\translate\translate;
+use moodleform;
+
+
 class edit extends moodleform {
     /**
      * Generates the preferences form with the data obtained of the API/block_edutechpreferences_get_api()
@@ -82,6 +87,42 @@ class edit extends moodleform {
             return $query->count;
         } else {
             return 0;
+        }
+    }
+    /**
+     * Inserts the answer from the user to the database
+     * In case of no existing a previus record from the user, inserts the answer
+     * In case of alredy exist a record, updates the existing answer
+     * @param stdClass $recordtoinsert an object who has the user id and his preferences
+     */
+    public function block_edutechpreferences_insert_answer($recordtoinsert){
+        global $DB, $USER;
+        $query = $DB->get_record_sql('SELECT id AS id FROM {block_edutechpreferences} WHERE userid = ? LIMIT 1', [$USER->id]);
+        $rowid = 0;
+        if (isset($query->id)) {
+            $rowid = $query->id;
+        }
+        if ($rowid == 0) {
+            try {
+                $DB->insert_record('block_edutechpreferences', $recordtoinsert);
+                \core\notification::success(get_string("databasesaved", "block_edutechpreferences"));
+            } catch (\Exception $e) {
+                \core\notification::error(get_string("databaseerror", "block_edutechpreferences"));
+            }
+        } else if ($rowid >= 1) {
+            $dataobject = array(
+                'id'            => $rowid,
+                'userid'        => $USER->id,
+                'preferences'   => $recordtoinsert->preferences
+            );
+            try {
+                $DB->update_record('block_edutechpreferences', $dataobject, $bulk = false);
+                \core\notification::success(get_string("databasesaved", "block_edutechpreferences"));
+            } catch (\Exception $e) {
+                \core\notification::error(get_string("databaseerror", "block_edutechpreferences"));
+            }
+        } else {
+            \core\notification::error(get_string("databaseerror", "block_edutechpreferences"));
         }
     }
 }
