@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Short description of the file
- * Plugin version and other meta-data are defined here.
+ * Create user test
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
@@ -29,8 +28,7 @@
 use block_edutechpreferences\report\get_report;
 
 /**
- * Short description for class
- * Plugin version and other meta-data are defined here.
+ * Create user test class
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
@@ -41,6 +39,9 @@ use block_edutechpreferences\report\get_report;
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class create_user_test extends \advanced_testcase {
+    /**
+     * Test if the average stats in the report match with the real stats
+     */
     public function test_totalstudents() {
         $this->resetAfterTest(true);
         $report = new get_report();
