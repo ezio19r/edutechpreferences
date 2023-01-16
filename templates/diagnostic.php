@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Diagnostic
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech

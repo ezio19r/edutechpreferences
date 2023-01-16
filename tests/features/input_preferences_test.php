@@ -1,18 +1,55 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+/**
+ * Input preferences test
+ *
+ * @package     block_edutechpreferences
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/form/edit.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/report/getreport.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/block/block.php');
-
 use block_edutechpreferences\report\get_report;
 use block_edutechpreferences\edit\edit;
 
-
-class input_preferences_test extends \advanced_testcase
-{
-    public function test_input()
-    {
+/**
+ * Input preferences test class
+ *
+ * @package     block_edutechpreferences
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class input_preferences_test extends \advanced_testcase {
+    /**
+     * Proof that the preferences entered
+     * by the students are being stored in the database.
+     */
+    public function test_input() {
         global $DB;
         $this->resetAfterTest(true);
 
@@ -46,7 +83,6 @@ class input_preferences_test extends \advanced_testcase
         $this->getDataGenerator()->enrol_user($user6->id, $course->id, 'teacher');
         $this->getDataGenerator()->enrol_user($user7->id, $course->id, 'guest');
 
-
         $this->setUser($user);
         $this->setUser($user1);
         $this->setUser($user2);
@@ -56,7 +92,7 @@ class input_preferences_test extends \advanced_testcase
         $this->setUser($user6);
         $this->setUser($user7);
 
-        $preferences_area = [
+        $preferencesarea = [
             "id1" => "1",
             "id2" => "1",
             "id3" => "1",
@@ -73,7 +109,7 @@ class input_preferences_test extends \advanced_testcase
         ];
 
         for ($i = 0; $i < 5; $i++) {
-            $idpreferences = array_rand($preferences_area, 4);
+            $idpreferences = array_rand($preferencesarea, 4);
             $preferences = [];
 
             foreach ($idpreferences as $key) {
@@ -88,37 +124,42 @@ class input_preferences_test extends \advanced_testcase
             $preferences = new edit();
             $preferences->block_edutechpreferences_insert_answer($recordtoinsert);
 
-            $query = $DB->get_record_sql('SELECT COUNT(id) as count FROM {block_edutechpreferences} WHERE  userid = ?', [$user->id]);
+            $query = $DB->get_record_sql('SELECT COUNT(id) as count
+                FROM {block_edutechpreferences}
+                WHERE  userid = ?', [$user->id]);
             if (isset($query->count)) {
                 $count = $query->count;
             } else {
                 $count = 0;
             }
-            //Check if the previous insertion has been succesfully
+            // Check if the previous insertion has been succesfully.
             $this->assertEquals(1, $count);
         }
 
-            //Check how many students give an answer to the form of preferences
-            $query = $DB->get_record_sql('SELECT DISTINCT COUNT(userid) as count FROM {block_edutechpreferences}');
-            if (isset($query->count)) {
-                $count = $query->count;
-            } else {
-                $count = 0;
-            }
-            $this->assertEquals(5, $count);
+        // Check how many students give an answer to the form of preferences.
+        $query = $DB->get_record_sql('SELECT DISTINCT COUNT(userid) as count FROM {block_edutechpreferences}');
+        if (isset($query->count)) {
+            $count = $query->count;
+        } else {
+            $count = 0;
+        }
+        $this->assertEquals(5, $count);
 
-            //Check if at least one answer is 1
-            $query = $DB->get_record_sql('SELECT preferences FROM {block_edutechpreferences} LIMIT 1');
-            if (isset($query->preferences)) {
-                $answer = json_encode($query->preferences[8]);
-            } else {
-                $answer = 0;
-            }
-            $this->assertEquals('"1"', $answer);
+        // Check if at least one answer is 1.
+        $query = $DB->get_record_sql('SELECT preferences FROM {block_edutechpreferences} LIMIT 1');
+        if (isset($query->preferences)) {
+            $answer = json_encode($query->preferences[8]);
+        } else {
+            $answer = 0;
+        }
+        $this->assertEquals('"1"', $answer);
     }
 
-    public function test_report()
-    {
+    /**
+     * Test if the preferences entered by the students
+     * are the same as those shown in the report.
+     */
+    public function test_report() {
         $this->resetAfterTest(true);
 
         $users = [];
@@ -150,7 +191,6 @@ class input_preferences_test extends \advanced_testcase
         $this->getDataGenerator()->enrol_user($user5->id, $course->id, 'teacher');
         $this->getDataGenerator()->enrol_user($user6->id, $course->id, 'teacher');
         $this->getDataGenerator()->enrol_user($user7->id, $course->id, 'guest');
-
 
         $this->setUser($user);
         $this->setUser($user1);
@@ -186,15 +226,13 @@ class input_preferences_test extends \advanced_testcase
         $this->assertEquals(80, $reportdata["stats"][0]["areas"][0]["count"]);
         $this->assertEquals(80, $reportdata["stats"][0]["areas"][1]["count"]);
         $this->assertEquals(80, $reportdata["stats"][0]["areas"][2]["count"]);
+        $this->assertEquals(80, $reportdata["stats"][1]["areas"][3]["count"]);
+        $this->assertEquals(80, $reportdata["stats"][1]["areas"][4]["count"]);
 
         $this->assertEquals(0, $reportdata["stats"][1]["areas"][0]["count"]);
         $this->assertEquals(0, $reportdata["stats"][1]["areas"][1]["count"]);
         $this->assertEquals(0, $reportdata["stats"][1]["areas"][2]["count"]);
-        $this->assertEquals(80, $reportdata["stats"][1]["areas"][3]["count"]);
-        $this->assertEquals(80, $reportdata["stats"][1]["areas"][4]["count"]);
-
         $this->assertEquals(0, $reportdata["stats"][2]["areas"][0]["count"]);
-
         $this->assertEquals(0, $reportdata["stats"][3]["areas"][0]["count"]);
         $this->assertEquals(0, $reportdata["stats"][3]["areas"][1]["count"]);
         $this->assertEquals(0, $reportdata["stats"][3]["areas"][2]["count"]);

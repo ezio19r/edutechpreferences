@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * API
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
@@ -27,12 +27,22 @@
  */
 namespace block_edutechpreferences\api;
 
+/**
+ * API class
+ *
+ * @package     block_edutechpreferences
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class api {
     /**
      * URL of the edutech repository
      */
-    // const SERVER = 'https://repositorio.edutech-project.org/';
-    const SERVER = 'http://localhost/edutech/';
+    const SERVER = 'https://repositorio.edutech-project.org/';
     /**
      * Attempt to connect to the Edutech Repositori to get the areas and preferences.
      * in case of failure returns a zero.
@@ -41,8 +51,7 @@ class api {
      * @return string
      */
     public function block_edutechpreferences_get_list() {
-        // $apidir = ( self::SERVER . "api/v1/preferences-area/");
-        $apidir = ( self::SERVER . "api.php");
+        $apidir = ( self::SERVER . "api/v1/preferences-area/");
         $url = $apidir;
         try {
             $curl = curl_init($url);

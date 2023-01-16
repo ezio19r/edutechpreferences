@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Get report
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
@@ -31,6 +31,18 @@ require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/translate/translate.php');
 use block_edutechpreferences\translate\translate;
 use block_edutechpreferences\api\api;
+
+/**
+ * Get report class
+ *
+ * @package     block_edutechpreferences
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class get_report {
 
     /**

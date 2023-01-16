@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Student edit form
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
@@ -35,7 +35,17 @@ use block_edutechpreferences\api\api;
 use block_edutechpreferences\translate\translate;
 use moodleform;
 
-
+/**
+ * Student edit form class
+ *
+ * @package     block_edutechpreferences
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class edit extends moodleform {
     /**
      * Generates the preferences form with the data obtained of the API/block_edutechpreferences_get_api()
@@ -95,7 +105,7 @@ class edit extends moodleform {
      * In case of alredy exist a record, updates the existing answer
      * @param stdClass $recordtoinsert an object who has the user id and his preferences
      */
-    public function block_edutechpreferences_insert_answer($recordtoinsert){
+    public function block_edutechpreferences_insert_answer($recordtoinsert) {
         global $DB, $USER;
         $query = $DB->get_record_sql('SELECT id AS id FROM {block_edutechpreferences} WHERE userid = ? LIMIT 1', [$USER->id]);
         $rowid = 0;
