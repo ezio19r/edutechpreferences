@@ -15,27 +15,50 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Block edutechpreferences
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/block/block.php');
 
+/**
+ * Block edutechpreferences class
+ *
+ * @package     block_edutechpreferences
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_edutechpreferences extends block_base {
     public function init() {
         $this->title = get_string("titleblock", "block_edutechpreferences");
     }
     public function get_content() {
         global $COURSE, $CFG;
+        $content1 = $this->block_edutechpreferences_fill_content($COURSE->id);
+        $this->content         = new stdClass;
+        $this->content->text   = $content1[0];
+        $this->content->footer = $content1[1];
+        if ($this->content !== null) {
+            return $this->content;
+        }
+    }
+
+    public function block_edutechpreferences_fill_content($courseid) {
+        global $COURSE, $CFG;
         $edutechblock = new edutechblock();
-        $id = $COURSE->id;
+        $id = $courseid;
         $context = context_course::instance($id);
         $body = '';
         $footer = '';
@@ -50,12 +73,8 @@ class block_edutechpreferences extends block_base {
               .get_string("editpreferences", "block_edutechpreferences").'</a><br/>';
               $footer = $edutechblock->block_edutechpreferences_get_student_preferences();
         }
-        if ($this->content !== null) {
-            return $this->content;
-        }
-        $this->content         = new stdClass;
-        $this->content->text   = $body;
-        $this->content->footer = $footer;
-        return $this->content;
+        $content = [];
+        array_push($content, $body, $footer);
+        return $content;
     }
 }

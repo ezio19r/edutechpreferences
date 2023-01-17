@@ -15,17 +15,29 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Translations
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_edutechpreferences\translate;
 
+/**
+ * Translations class
+ *
+ * @package     block_edutechpreferences
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class translate {
     /**
      * Check the language in the SESSION or of the USER if lang in SESSION is not set,
@@ -61,7 +73,7 @@ class translate {
                 $translate = 'Text description for images';
                 break;
             case 'Evitar recursos con dependencia de color':
-                $translate = 'Avoid resources with color dependence';
+                $translate = 'Avoid resources with color dependency';
                 break;
             case 'Información mayoritariamente visual':
                 $translate = 'Mostly visual information';
@@ -70,19 +82,19 @@ class translate {
                 $translate = 'Sounds Digital Resources';
                 break;
             case 'información mayoritariamente auditivo':
-                $translate = 'Mostly audible information';
+                $translate = 'Mostly hearing information';
                 break;
             case 'Evitar sonido de fondo sin control':
                 $translate = 'Avoid uncontrolled background sound';
                 break;
             case 'Transcripción para audio y video':
-                $translate = 'Transcription for audio and video';
+                $translate = 'Transcript for audio and video';
                 break;
             case 'Descripción de audio para video':
                 $translate = 'Audio description for video';
                 break;
             case 'Subtítulos para audio y video':
-                $translate = 'Subtitles for audio and video';
+                $translate = 'Captions for audio and video';
                 break;
             case 'Recursos Digitales Textuales':
                 $translate = 'Textual Digital Resources';
@@ -94,7 +106,7 @@ class translate {
                 $translate = 'Level Of Interactivity';
                 break;
             case 'Manejo total con mouse':
-                $translate = 'Full mouse operation';
+                $translate = 'Full mouse control';
                 break;
             case 'Manejo total con teclado':
                 $translate = 'Full keyboard operation';
@@ -103,7 +115,7 @@ class translate {
                 $translate = 'Avoid simulation/motion';
                 break;
             case 'Evitar luces parpadeantes':
-                $translate = 'Avoid flickering lights';
+                $translate = 'Avoid flashing lights';
                 break;
         }
         return $translate;

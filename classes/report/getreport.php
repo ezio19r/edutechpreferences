@@ -15,13 +15,14 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Get report
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_edutechpreferences\report;
@@ -30,7 +31,19 @@ require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/api/api.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/translate/translate.php');
 use block_edutechpreferences\translate\translate;
 use block_edutechpreferences\api\api;
-class getreport {
+
+/**
+ * Get report class
+ *
+ * @package     block_edutechpreferences
+ * @copyright   2022 EduTech
+ * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
+ * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
+ * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class get_report {
 
     /**
      * Checks if the course that is trying to access exists before generating the report.
