@@ -22,7 +22,7 @@
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -34,7 +34,7 @@
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class access_test extends \advanced_testcase {
@@ -43,6 +43,8 @@ class access_test extends \advanced_testcase {
      * capabilitie to view the report can see it.
      */
     public function test_allow_teacher() {
+        defined('MOODLE_INTERNAL') || die();
+        global $CFG;
         $this->resetAfterTest(true);
 
         $user = $this->getDataGenerator()->create_user();
@@ -51,9 +53,7 @@ class access_test extends \advanced_testcase {
         $this->getDataGenerator()->enrol_user($user->id, $course->id, 'teacher');
         $this->setUser($user);
 
-        $generator = $this->getDataGenerator()->create_block('edutechpreferences', array('course' => $course->id));
-
-        require_once(dirname(dirname(__DIR__)) . '\coursereport.php');
+        require_once(dirname(dirname(__DIR__)) . '/coursereport.php');
 
         $report = new course_report();
 
@@ -71,6 +71,8 @@ class access_test extends \advanced_testcase {
      * capabilitie to view the report can't see it.
      */
     public function test_denegate_student() {
+        defined('MOODLE_INTERNAL') || die();
+        global $CFG;
         $this->resetAfterTest(true);
 
         $user = $this->getDataGenerator()->create_user();
@@ -79,9 +81,7 @@ class access_test extends \advanced_testcase {
         $this->getDataGenerator()->enrol_user($user->id, $course->id, 'student');
         $this->setUser($user);
 
-        $generator = $this->getDataGenerator()->create_block('edutechpreferences', array('course' => $course->id));
-
-        require_once(dirname(dirname(__DIR__)) . '\coursereport.php');
+        require_once(dirname(dirname(__DIR__)) . '/coursereport.php');
 
         $reports = new course_report();
 

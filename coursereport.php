@@ -22,14 +22,14 @@
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
-global $CFG, $OUTPUT, $PAGE;
 require_once(__DIR__ . '/../../config.php');
+global $CFG, $OUTPUT, $PAGE;
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/report/getreport.php');
 use block_edutechpreferences\report\get_report;
+defined('MOODLE_INTERNAL') || die();
 
 $PAGE->set_url(new moodle_url('/blocks/edutechpreferences/coursereport.php'));
 require_login();
@@ -54,7 +54,7 @@ echo $OUTPUT->footer();
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class course_report {

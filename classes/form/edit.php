@@ -22,7 +22,7 @@
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_edutechpreferences\edit;
@@ -43,7 +43,7 @@ use moodleform;
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class edit extends moodleform {
@@ -101,7 +101,7 @@ class edit extends moodleform {
     }
     /**
      * Inserts the answer from the user to the database
-     * In case of no existing a previus record from the user, inserts the answer
+     * In case of no existing a previus record from the user, inserts the answer;
      * In case of alredy exist a record, updates the existing answer
      * @param stdClass $recordtoinsert an object who has the user id and his preferences
      */

@@ -22,13 +22,13 @@
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
-require(dirname(dirname(__DIR__)). '\block_edutechpreferences.php');
+require_once($CFG->dirroot . '/blocks/edutechpreferences/block_edutechpreferences.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/form/edit.php');
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/report/getreport.php');
 use block_edutechpreferences\edit\edit;
@@ -42,7 +42,7 @@ use block_edutechpreferences\report\get_report;
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_test extends \advanced_testcase {

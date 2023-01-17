@@ -22,16 +22,15 @@
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
-global $CFG, $PAGE, $OUTPUT;
-
 require_once(__DIR__ . '/../../config.php');
+global $CFG, $PAGE, $OUTPUT;
 require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/form/edit.php');
 use block_edutechpreferences\edit\edit;
 defined('MOODLE_INTERNAL') || die();
+
 $PAGE->set_url(new moodle_url('/blocks/edutechpreferences/preferences.php'));
 require_login();
 $PAGE->set_context(\context_system::instance());
@@ -54,7 +53,7 @@ echo $OUTPUT->footer();
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class preferences {

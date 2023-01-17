@@ -22,9 +22,12 @@
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+defined('MOODLE_INTERNAL') || die();
+global $CFG;
+require_once($CFG->dirroot . '/blocks/edutechpreferences/classes/report/getreport.php');
 use block_edutechpreferences\report\get_report;
 
 /**
@@ -35,7 +38,7 @@ use block_edutechpreferences\report\get_report;
  * @author      2022 Ricardo Emmanuel Reyes Acosta<ricardo.ra@aguascalientes.tecnm.mx>
  * @author      2022 Ricardo Mendoza Gonzalez<mendozagric@aguascalientes.tecnm.mx>
  * @author      2022 Mario Alberto Rodriguez Diaz<mario.rd@aguascalientes.tecnm.mx>
- * @author      2022 Carlos Humberto Duron Lara<18151652@aguascalientes.tecnm.com>
+ * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class create_user_test extends \advanced_testcase {
@@ -67,8 +70,6 @@ class create_user_test extends \advanced_testcase {
         $this->getDataGenerator()->enrol_user($user5->id, $course->id, 'teacher');
         $this->getDataGenerator()->enrol_user($user6->id, $course->id, 'edutech');
         $this->getDataGenerator()->enrol_user($user7->id, $course->id, 'guest');
-
-        $generator = $this->getDataGenerator()->create_block('edutechpreferences', array('course' => $course->id));
 
         $context = context_course::instance($course->id);
 
