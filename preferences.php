@@ -62,7 +62,7 @@ class preferences {
         $mform = new edit();
         // Form processing and displaying is done here.
         if ($mform->is_cancelled()) {
-            redirect($CFG->wwwroot . "/", get_string("databasediscarted", "block_edutechpreferences"));
+            \core\notification::info(get_string("databasediscarted", "block_edutechpreferences"));
         } else if ($fromform = $mform->get_data()) {
             // In this case you process validated data. $mform->get_data() returns data posted in form.
             $recordtoinsert = new stdClass();
