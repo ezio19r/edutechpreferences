@@ -71,7 +71,6 @@ class preferences {
             unset($answers->submitbutton);
             $recordtoinsert->preferences = json_encode($answers);
             $mform->block_edutechpreferences_insert_answer($recordtoinsert);
-
             // Display form with the information previously given and stored in the database.
             return $mform->display();
         } else {
