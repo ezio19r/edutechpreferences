@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * API
+ * Access test
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
@@ -25,10 +25,9 @@
  * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace block_edutechpreferences\api;
 
 /**
- * API class
+ * Access test class
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
@@ -38,30 +37,58 @@ namespace block_edutechpreferences\api;
  * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class api {
+class access_test extends \advanced_testcase {
     /**
-     * URL of the edutech repository
+     * Test that only users with the
+     * capabilitie to view the report can see it.
      */
-    const SERVER = 'https://repositorio.edutech-project.org/';
+    public function test_allow_teacher() {
+        defined('MOODLE_INTERNAL') || die();
+        global $CFG;
+        $this->resetAfterTest(true);
+
+        $user = $this->getDataGenerator()->create_user();
+        $course = $this->getDataGenerator()->create_course();
+
+        $this->getDataGenerator()->enrol_user($user->id, $course->id, 'teacher');
+        $this->setUser($user);
+
+        require_once(dirname(dirname(__DIR__)) . '/coursereport.php');
+
+        $report = new course_report();
+
+        $view = $report->init($course->id);
+
+        $this->setUser(null);
+
+        $contain = str_contains($view, get_string("totalstudents", "block_edutechpreferences"));
+
+        $this->assertTrue($contain);
+    }
+
     /**
-     * Attempt to connect to the Edutech Repositori to get the areas and preferences.
-     * in case of failure returns a zero.
-     * in case of success Returns a json array with the areas and preferences.
-     * @throws \repository_exception
-     * @return string
+     * Test that users without the
+     * capabilitie to view the report can't see it.
      */
-    public function block_edutechpreferences_get_list() {
-        $apidir = ( self::SERVER . "api/v1/preferences-area/");
-        $url = $apidir;
-        try {
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            $resp = curl_exec($curl);
-            curl_close($curl);
-            return($resp);
-        } catch (\Exception $e) {
-              return 0;
-        }
+    public function test_denegate_student() {
+        defined('MOODLE_INTERNAL') || die();
+        global $CFG;
+        $this->resetAfterTest(true);
+
+        $user = $this->getDataGenerator()->create_user();
+        $course = $this->getDataGenerator()->create_course();
+
+        $this->getDataGenerator()->enrol_user($user->id, $course->id, 'student');
+        $this->setUser($user);
+
+        require_once(dirname(dirname(__DIR__)) . '/coursereport.php');
+
+        $reports = new course_report();
+
+        $view = $reports->init($course->id);
+
+        $this->setUser(null);
+
+        $this->assertNull($view);
     }
 }

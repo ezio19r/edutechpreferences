@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * API
+ * API test
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
@@ -25,10 +25,10 @@
  * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace block_edutechpreferences\api;
+use block_edutechpreferences\api\api;
 
 /**
- * API class
+ * API test class
  *
  * @package     block_edutechpreferences
  * @copyright   2022 EduTech
@@ -38,30 +38,19 @@ namespace block_edutechpreferences\api;
  * @author      2022 Carlos Humberto Duron Lara<berthum.ondur@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class api {
+class api_test extends \advanced_testcase {
     /**
-     * URL of the edutech repository
+     * Test the reponse of the API.
      */
-    const SERVER = 'https://repositorio.edutech-project.org/';
-    /**
-     * Attempt to connect to the Edutech Repositori to get the areas and preferences.
-     * in case of failure returns a zero.
-     * in case of success Returns a json array with the areas and preferences.
-     * @throws \repository_exception
-     * @return string
-     */
-    public function block_edutechpreferences_get_list() {
-        $apidir = ( self::SERVER . "api/v1/preferences-area/");
-        $url = $apidir;
-        try {
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            $resp = curl_exec($curl);
-            curl_close($curl);
-            return($resp);
-        } catch (\Exception $e) {
-              return 0;
-        }
+    public function test_get_api_list() {
+        $api = new api();
+        $apiresp = json_decode($api->block_edutechpreferences_get_list());
+
+        $this->assertIsArray($apiresp);
+        $this->assertGreaterThan(1, count($apiresp));
+        $this->assertTrue(isset($apiresp[0]->id));
+        $this->assertTrue(isset($apiresp[0]->preferences_are));
+        $this->assertTrue(isset($apiresp[0]->preferences[0]->id));
+        $this->assertTrue(isset($apiresp[0]->preferences[0]->description));
     }
 }
